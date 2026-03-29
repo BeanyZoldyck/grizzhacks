@@ -201,13 +201,19 @@ The system consists of two primary subsystems connected via a MongoDB-backed Web
 
 ### Next Steps
 
-- [ ] **Lesson engine:** Define a lesson format (JSON/YAML) that maps steps → projection geometries
-- [ ] **Visualization generator:** Convert lesson step definitions into LightGuide-compatible projection commands
-- [ ] **WebSocket gateway server:** Build the server-side counterpart that bridges MongoDB change streams to WebSocket clients
-- [ ] **Device presence tracking:** Use ESP32 heartbeats to maintain a live device registry in MongoDB
-- [ ] **Step validation:** Optionally verify component placement (e.g., via sensor input or camera) before allowing step advancement
-- [ ] **Multi-device support:** Handle multiple ESP32 boards in a single lesson (e.g., multi-MCU projects)
-- [ ] **Lesson authoring UI:** Web-based tool for creating and editing lesson programs
+#### CLient side 
+
+- [ ] convert lesson step into xml files with a one shot
+- [ ] send xml through mongo websocket 
+- [ ] vibe the software for the esp32
+- [ ] flash the hardware at the end
+
+#### Server side 
+
+- [ ] receive xml files form the client
+- [ ] write the files to the right locations (viz in viz and tools in tools )
+- [ ] refresh the program with the sdk 
+- [ ] go through each step till the user reaches the end
 
 ---
 
