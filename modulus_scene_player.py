@@ -42,7 +42,6 @@ def _bucket_index(step_time_main: float, cycle_seconds: float, scene_count: int)
 
 def _move_to_scene(client: LightGuideClient, current_idx: int | None, target_idx: int) -> int:
     if current_idx is None:
-        client.restart()
         current_idx = 0
 
     if target_idx < current_idx:
@@ -63,6 +62,7 @@ def run_modulus_scene_loop(
     cycle_seconds: float,
     scene_count: int,
     poll_seconds: float,
+    write_scene_variable: bool,
 ) -> None:
     if cycle_seconds <= 0:
         raise ValueError("cycle_seconds must be > 0")
@@ -71,12 +71,16 @@ def run_modulus_scene_loop(
 
     client = LightGuideClient(base_url=base_url)
 
+    client.abort()
+    client.run_mode()
     client.run_program(program_path, wait=False)
     client.message(
         f"Modulus scene loop started: cycle={cycle_seconds:.2f}s scenes={scene_count}"
     )
 
-    current_idx: int | None = None
+    time.sleep(max(poll_seconds, 0.15))
+
+    current_idx: int | None = 0
     while True:
         response = client.get_variable("StepTimeMain")
         step_time_main = _parse_step_time_main(response)
@@ -84,7 +88,11 @@ def run_modulus_scene_loop(
 
         if target_idx != current_idx:
             current_idx = _move_to_scene(client, current_idx, target_idx)
-            client.set_variable("CurrentSceneIndex", current_idx + 1)
+            if write_scene_variable:
+                try:
+                    client.set_variable("CurrentSceneIndex", current_idx + 1)
+                except Exception:
+                    pass
 
         time.sleep(poll_seconds)
 
@@ -121,6 +129,11 @@ def build_parser() -> argparse.ArgumentParser:
         default=0.1,
         help="Polling interval for StepTimeMain",
     )
+    parser.add_argument(
+        "--write-scene-variable",
+        action="store_true",
+        help="Write CurrentSceneIndex variable (only if this variable exists)",
+    )
     return parser
 
 
@@ -133,6 +146,7 @@ def main() -> None:
             cycle_seconds=args.cycle_seconds,
             scene_count=args.scene_count,
             poll_seconds=args.poll_seconds,
+            write_scene_variable=args.write_scene_variable,
         )
     except KeyboardInterrupt:
         pass
