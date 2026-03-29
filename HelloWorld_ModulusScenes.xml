@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CommandInformation xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://tempuri.org/CommandInformation.xsd">
+  <Metadata>
+    <SoftwareVersion>25.3.4.0</SoftwareVersion>
+    <LicenseSerial>833503</LicenseSerial>
+    <Calibration>2026-03-17T11:07:19.6722405-04:00</Calibration>
+    <SaveCount>1</SaveCount>
+    <SaveDate>2026-03-29T12:10:00.0000000-04:00</SaveDate>
+  </Metadata>
+
+  <Command>
+    <Line>1</Line>
+    <Type>StartProgram</Type>
+    <Description>Start of Workflow</Description>
+  </Command>
+
+  <Command>
+    <Line>2</Line>
+    <Type>StepStart</Type>
+    <Description>Step Start</Description>
+    <Comment>Scene 1</Comment>
+    <Step>1</Step>
+  </Command>
+  <Command>
+    <Line>3</Line>
+    <Type>ClearCanvas</Type>
+    <Description>Clear Canvas [All]</Description>
+    <Canvas>1024</Canvas>
+  </Command>
+  <Command>
+    <Line>4</Line>
+    <Type>VDFGraphics</Type>
+    <Description>Square Outline.svg; Color: 'Lime'</Description>
+    <FileName>Square Outline.svg</FileName>
+    <Canvas>1</Canvas>
+    <X>720</X>
+    <Y>380</Y>
+    <Width>120</Width>
+    <Height>220</Height>
+    <BlinkRate>1000</BlinkRate>
+    <Movements>None</Movements>
+    <FilePath>C:\Program Files\OPS Solutions\Light Guide Systems\VDFGraphics\Shapes\Square Outline.svg</FilePath>
+    <FilterColor>0,255,0</FilterColor>
+  </Command>
+  <Command>
+    <Line>5</Line>
+    <Type>VDFText</Type>
+    <Description>"Scene 1"</Description>
+    <Text>Scene 1</Text>
+    <Canvas>1</Canvas>
+    <X>740</X>
+    <Y>270</Y>
+    <Width>260</Width>
+    <Height>70</Height>
+    <BlinkType>None</BlinkType>
+    <BlinkRate>1000</BlinkRate>
+    <Movements>None</Movements>
+    <FontName>Microsoft Sans Serif</FontName>
+    <TextColor>255,255,255,255</TextColor>
+    <FontSize>44</FontSize>
+    <Justify>0</Justify>
+    <Rtf>{\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang1033{\fonttbl{\f0\fnil Microsoft Sans Serif;}}
+{\colortbl ;\red255\green255\blue255;}
+{\*\generator Riched20 10.0.19041}\viewkind4\uc1 
+\pard\cf1\f0\fs44 Scene 1\par
+}
+</Rtf>
+  </Command>
+  <Command>
+    <Line>6</Line>
+    <Type>Confirmation</Type>
+    <Description>Wait For [Manual Confirmation]</Description>
+    <Variable>Manual Confirmation</Variable>
+    <ConfirmType>Forward</ConfirmType>
+    <StepsToMove>1</StepsToMove>
+  </Command>
+
+  <Command>
+    <Line>7</Line>
+    <Type>StepStart</Type>
+    <Description>Step Start</Description>
+    <Comment>Scene 2</Comment>
+    <Step>2</Step>
+  </Command>
+  <Command>
+    <Line>8</Line>
+    <Type>ClearCanvas</Type>
+    <Description>Clear Canvas [All]</Description>
+    <Canvas>1024</Canvas>
+  </Command>
+  <Command>
+    <Line>9</Line>
+    <Type>VDFGraphics</Type>
+    <Description>Square Outline.svg; Color: 'Lime'</Description>
+    <FileName>Square Outline.svg</FileName>
+    <Canvas>1</Canvas>
+    <X>900</X>
+    <Y>380</Y>
+    <Width>120</Width>
+    <Height>220</Height>
+    <BlinkRate>1000</BlinkRate>
+    <Movements>None</Movements>
+    <FilePath>C:\Program Files\OPS Solutions\Light Guide Systems\VDFGraphics\Shapes\Square Outline.svg</FilePath>
+    <FilterColor>0,255,0</FilterColor>
+  </Command>
+  <Command>
+    <Line>10</Line>
+    <Type>VDFText</Type>
+    <Description>"Scene 2"</Description>
+    <Text>Scene 2</Text>
+    <Canvas>1</Canvas>
+    <X>920</X>
+    <Y>270</Y>
+    <Width>260</Width>
+    <Height>70</Height>
+    <BlinkType>None</BlinkType>
+    <BlinkRate>1000</BlinkRate>
+    <Movements>None</Movements>
+    <FontName>Microsoft Sans Serif</FontName>
+    <TextColor>255,255,255,255</TextColor>
+    <FontSize>44</FontSize>
+    <Justify>0</Justify>
+    <Rtf>{\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang1033{\fonttbl{\f0\fnil Microsoft Sans Serif;}}
+{\colortbl ;\red255\green255\blue255;}
+{\*\generator Riched20 10.0.19041}\viewkind4\uc1 
+\pard\cf1\f0\fs44 Scene 2\par
+}
+</Rtf>
+  </Command>
+  <Command>
+    <Line>11</Line>
+    <Type>Confirmation</Type>
+    <Description>Wait For [Manual Confirmation]</Description>
+    <Variable>Manual Confirmation</Variable>
+    <ConfirmType>Forward</ConfirmType>
+    <StepsToMove>1</StepsToMove>
+  </Command>
+
+  <Command>
+    <Line>12</Line>
+    <Type>StepStart</Type>
+    <Description>Step Start</Description>
+    <Comment>Scene 3</Comment>
+    <Step>3</Step>
+  </Command>
+  <Command>
+    <Line>13</Line>
+    <Type>ClearCanvas</Type>
+    <Description>Clear Canvas [All]</Description>
+    <Canvas>1024</Canvas>
+  </Command>
+  <Command>
+    <Line>14</Line>
+    <Type>VDFGraphics</Type>
+    <Description>Square Outline.svg; Color: 'Lime'</Description>
+    <FileName>Square Outline.svg</FileName>
+    <Canvas>1</Canvas>
+    <X>1080</X>
+    <Y>380</Y>
+    <Width>120</Width>
+    <Height>220</Height>
+    <BlinkRate>1000</BlinkRate>
+    <Movements>None</Movements>
+    <FilePath>C:\Program Files\OPS Solutions\Light Guide Systems\VDFGraphics\Shapes\Square Outline.svg</FilePath>
+    <FilterColor>0,255,0</FilterColor>
+  </Command>
+  <Command>
+    <Line>15</Line>
+    <Type>VDFText</Type>
+    <Description>"Scene 3"</Description>
+    <Text>Scene 3</Text>
+    <Canvas>1</Canvas>
+    <X>1100</X>
+    <Y>270</Y>
+    <Width>260</Width>
+    <Height>70</Height>
+    <BlinkType>None</BlinkType>
+    <BlinkRate>1000</BlinkRate>
+    <Movements>None</Movements>
+    <FontName>Microsoft Sans Serif</FontName>
+    <TextColor>255,255,255,255</TextColor>
+    <FontSize>44</FontSize>
+    <Justify>0</Justify>
+    <Rtf>{\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang1033{\fonttbl{\f0\fnil Microsoft Sans Serif;}}
+{\colortbl ;\red255\green255\blue255;}
+{\*\generator Riched20 10.0.19041}\viewkind4\uc1 
+\pard\cf1\f0\fs44 Scene 3\par
+}
+</Rtf>
+  </Command>
+  <Command>
+    <Line>16</Line>
+    <Type>Confirmation</Type>
+    <Description>Wait For [Manual Confirmation]</Description>
+    <Variable>Manual Confirmation</Variable>
+    <ConfirmType>Forward</ConfirmType>
+    <StepsToMove>1</StepsToMove>
+  </Command>
+
+  <Command>
+    <Line>17</Line>
+    <Type>StepStart</Type>
+    <Description>Step Start</Description>
+    <Comment>Scene 4</Comment>
+    <Step>4</Step>
+  </Command>
+  <Command>
+    <Line>18</Line>
+    <Type>ClearCanvas</Type>
+    <Description>Clear Canvas [All]</Description>
+    <Canvas>1024</Canvas>
+  </Command>
+  <Command>
+    <Line>19</Line>
+    <Type>VDFGraphics</Type>
+    <Description>Square Outline.svg; Color: 'Lime'</Description>
+    <FileName>Square Outline.svg</FileName>
+    <Canvas>1</Canvas>
+    <X>1260</X>
+    <Y>380</Y>
+    <Width>120</Width>
+    <Height>220</Height>
+    <BlinkRate>1000</BlinkRate>
+    <Movements>None</Movements>
+    <FilePath>C:\Program Files\OPS Solutions\Light Guide Systems\VDFGraphics\Shapes\Square Outline.svg</FilePath>
+    <FilterColor>0,255,0</FilterColor>
+  </Command>
+  <Command>
+    <Line>20</Line>
+    <Type>VDFText</Type>
+    <Description>"Scene 4"</Description>
+    <Text>Scene 4</Text>
+    <Canvas>1</Canvas>
+    <X>1280</X>
+    <Y>270</Y>
+    <Width>260</Width>
+    <Height>70</Height>
+    <BlinkType>None</BlinkType>
+    <BlinkRate>1000</BlinkRate>
+    <Movements>None</Movements>
+    <FontName>Microsoft Sans Serif</FontName>
+    <TextColor>255,255,255,255</TextColor>
+    <FontSize>44</FontSize>
+    <Justify>0</Justify>
+    <Rtf>{\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang1033{\fonttbl{\f0\fnil Microsoft Sans Serif;}}
+{\colortbl ;\red255\green255\blue255;}
+{\*\generator Riched20 10.0.19041}\viewkind4\uc1 
+\pard\cf1\f0\fs44 Scene 4\par
+}
+</Rtf>
+  </Command>
+  <Command>
+    <Line>21</Line>
+    <Type>Confirmation</Type>
+    <Description>Wait For [Manual Confirmation]</Description>
+    <Variable>Manual Confirmation</Variable>
+    <ConfirmType>Forward</ConfirmType>
+    <StepsToMove>1</StepsToMove>
+  </Command>
+
+  <Command>
+    <Line>22</Line>
+    <Type>EndProgram</Type>
+    <Description>End of Workflow</Description>
+    <FileName>HelloWorld_ModulusScenes.xml</FileName>
+    <FilePath>C:\Program Files\OPS Solutions\Light Guide Systems\VDFPrograms\HelloWorld_ModulusScenes.xml</FilePath>
+  </Command>
+</CommandInformation>
