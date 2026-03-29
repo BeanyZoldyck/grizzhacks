@@ -91,6 +91,41 @@ def _extract_xml_bundle_from_payload(payload: object) -> dict[str, str]:
                     files[name] = content
 
     if isinstance(payload, dict):
+        # FastAPI /lesson/text/xml current shape:
+        # {
+        #   "visualization_xml_documents": [{"path": "...", "xml": "<CommandInformation..."}],
+        #   "tool_xml_documents": [{"path": "...", "xml": "<VisionProgramInformation..."}],
+        #   ...
+        # }
+        vis_docs = payload.get("visualization_xml_documents")
+        if isinstance(vis_docs, list):
+            for idx, item in enumerate(vis_docs, start=1):
+                if not isinstance(item, dict):
+                    continue
+                content = item.get("xml")
+                if not isinstance(content, str):
+                    continue
+                name = item.get("name") or item.get("filename") or item.get("path")
+                if not isinstance(name, str) or not name.strip():
+                    name = f"Scene{idx}.xml"
+                files[name] = content
+
+        # Keep tool XML parsing for compatibility/debug payloads, but these are
+        # not LightGuide VDFPrograms. We only include them if nothing better is present.
+        if not files:
+            tool_docs = payload.get("tool_xml_documents")
+            if isinstance(tool_docs, list):
+                for idx, item in enumerate(tool_docs, start=1):
+                    if not isinstance(item, dict):
+                        continue
+                    content = item.get("xml")
+                    if not isinstance(content, str):
+                        continue
+                    name = item.get("name") or item.get("filename") or item.get("path")
+                    if not isinstance(name, str) or not name.strip():
+                        name = f"ToolScene{idx}.xml"
+                    files[name] = content
+
         scenes_map = payload.get("scenes")
         if isinstance(scenes_map, dict):
             for name, content in scenes_map.items():
@@ -156,6 +191,8 @@ def _extract_xml_bundle_from_response(payload: Any) -> dict[str, str]:
     if isinstance(payload, dict):
         candidates.extend(
             [
+                payload.get("data"),
+                payload.get("result"),
                 payload.get("payload"),
                 payload.get("message"),
                 payload.get("text"),
