@@ -1,12 +1,12 @@
-"""Hot-swap XML scene programs from backend text stream.
+"""Hot-swap XML scene programs by polling MongoDB for updates.
 
 Behavior:
 1. Load environment via dotenv and read MONGODB_URI from os.environ.
-2. Connect to backend WebSocket (URI from MONGODB_URI).
+2. Patch sockets for SOCKS5 proxy (PySocks), then initialize pymongo.
 3. On startup, clear XML files in scenes/ and play default waiting scenes.
-4. When an XML batch arrives over WebSocket text stream, replace scenes/ files
-   and display them by StepTimeMain modulus buckets.
-5. On each subsequent batch, replace scenes/ again and continue.
+4. Poll embetter.lesson_plans every 10 seconds for newest document.
+5. If newest document changed, replace scenes/ XML files and display them by
+   StepTimeMain modulus buckets.
 """
 
 from __future__ import annotations
@@ -15,11 +15,12 @@ import argparse
 import asyncio
 import json
 import os
+import socket
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
-import websockets
+import socks
 from dotenv import load_dotenv
 
 from lightguide_client import LightGuideClient
@@ -38,8 +39,18 @@ def _repo_root() -> Path:
 
 def _load_env() -> None:
     repo_root = _repo_root()
-    load_dotenv()
-    load_dotenv(repo_root / "mongo" / ".env")
+    load_dotenv(override=True)
+    load_dotenv(repo_root / "mongo" / ".env", override=True)
+
+
+def _patch_socks_socket() -> None:
+    proxy_host = os.environ.get("SOCKS_PROXY_HOST", "localhost")
+    proxy_port = int(os.environ.get("SOCKS_PROXY_PORT", "1080"))
+
+    socks.set_default_proxy(socks.SOCKS5, proxy_host, proxy_port)
+    socket.SOCK_CLOEXEC = 0
+    socket.socket = socks.socksocket
+    socks.wrapmodule(socket)
 
 
 def _parse_step_time_main(payload: object) -> float:
@@ -70,8 +81,9 @@ def _clear_scene_xmls(scenes_dir: Path) -> None:
         path.unlink(missing_ok=True)
 
 
-def _extract_xml_bundle(message_text: str) -> dict[str, str]:
-    payload = json.loads(message_text)
+def _extract_xml_bundle_from_payload(payload: object) -> dict[str, str]:
+    if isinstance(payload, str):
+        payload = json.loads(payload)
 
     files: dict[str, str] = {}
 
@@ -109,9 +121,29 @@ def _extract_xml_bundle(message_text: str) -> dict[str, str]:
         cleaned[file_name] = content
 
     if not cleaned:
-        raise ValueError("Backend payload had no .xml files")
+        raise ValueError("Payload had no .xml files")
 
     return cleaned
+
+
+def _extract_xml_bundle_from_document(document: dict[str, Any]) -> dict[str, str]:
+    candidates = [
+        document.get("payload"),
+        document.get("message"),
+        document.get("text"),
+        document.get("json"),
+        document,
+    ]
+
+    for candidate in candidates:
+        if candidate is None:
+            continue
+        try:
+            return _extract_xml_bundle_from_payload(candidate)
+        except Exception:
+            continue
+
+    raise ValueError("No XML bundle found in MongoDB document")
 
 
 def _write_scene_bundle(scenes_dir: Path, files: dict[str, str]) -> list[str]:
@@ -125,35 +157,58 @@ def _write_scene_bundle(scenes_dir: Path, files: dict[str, str]) -> list[str]:
     return written
 
 
-async def _backend_listener(
+def _latest_lesson_plan_doc(mongo_uri: str, db_name: str, collection_name: str) -> dict[str, Any] | None:
+    from pymongo import MongoClient
+
+    client = MongoClient(mongo_uri)
+    try:
+        collection = client[db_name][collection_name]
+        return collection.find_one(sort=[("_id", -1)])
+    finally:
+        client.close()
+
+
+async def _mongo_poller(
     *,
-    ws_uri: str,
+    mongo_uri: str,
+    db_name: str,
+    collection_name: str,
     scenes_dir: Path,
     updates: asyncio.Queue[SceneSet],
-    reconnect_seconds: float,
+    poll_seconds: float,
 ) -> None:
     version = 0
+    last_seen_id: object | None = None
+
     while True:
         try:
-            async with websockets.connect(ws_uri, max_size=None) as ws:
-                async for message in ws:
-                    if isinstance(message, bytes):
-                        text = message.decode()
-                    else:
-                        text = message
+            doc = await asyncio.to_thread(
+                _latest_lesson_plan_doc,
+                mongo_uri,
+                db_name,
+                collection_name,
+            )
+            if doc is None:
+                await asyncio.sleep(poll_seconds)
+                continue
 
-                    files = _extract_xml_bundle(text)
-                    programs = _write_scene_bundle(scenes_dir, files)
-                    version += 1
-                    await updates.put(
-                        SceneSet(
-                            programs=programs,
-                            version=version,
-                            source="backend",
-                        )
+            latest_id = doc.get("_id")
+            if latest_id != last_seen_id:
+                files = _extract_xml_bundle_from_document(doc)
+                programs = _write_scene_bundle(scenes_dir, files)
+                version += 1
+                last_seen_id = latest_id
+                await updates.put(
+                    SceneSet(
+                        programs=programs,
+                        version=version,
+                        source="backend",
                     )
+                )
         except Exception:
-            await asyncio.sleep(reconnect_seconds)
+            pass
+
+        await asyncio.sleep(poll_seconds)
 
 
 async def _player_loop(
@@ -203,7 +258,7 @@ async def _player_loop(
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
-        description="Swap XML programs from backend stream using StepTimeMain modulus",
+        description="Swap XML programs from MongoDB poll using StepTimeMain modulus",
     )
     parser.add_argument(
         "--base-url",
@@ -223,10 +278,20 @@ def build_parser() -> argparse.ArgumentParser:
         help="Polling interval for StepTimeMain",
     )
     parser.add_argument(
-        "--reconnect-seconds",
+        "--mongo-poll-seconds",
         type=float,
-        default=1.0,
-        help="WebSocket reconnect delay",
+        default=10.0,
+        help="Polling interval for MongoDB lesson updates",
+    )
+    parser.add_argument(
+        "--mongo-db",
+        default="embetter",
+        help="MongoDB database name",
+    )
+    parser.add_argument(
+        "--mongo-collection",
+        default="lesson_plans",
+        help="MongoDB collection name",
     )
     parser.add_argument(
         "--scenes-dir",
@@ -243,12 +308,11 @@ def build_parser() -> argparse.ArgumentParser:
 
 async def _main_async(args: argparse.Namespace) -> None:
     _load_env()
+    _patch_socks_socket()
 
-    ws_uri = os.environ.get("MONGODB_URI", "ws://141.210.86.11:8765").strip()
-    if not ws_uri:
-        raise RuntimeError("MONGODB_URI is required and must be a ws:// or wss:// URL")
-    if not (ws_uri.startswith("ws://") or ws_uri.startswith("wss://")):
-        raise RuntimeError("MONGODB_URI must be a ws:// or wss:// URL for backend stream")
+    mongo_uri = os.environ.get("MONGODB_URI", "").strip()
+    if not mongo_uri:
+        raise RuntimeError("MONGODB_URI is required")
 
     scenes_dir = Path(args.scenes_dir).resolve()
     default_dir = Path(args.default_dir).resolve()
@@ -261,12 +325,14 @@ async def _main_async(args: argparse.Namespace) -> None:
 
     updates: asyncio.Queue[SceneSet] = asyncio.Queue()
 
-    listener_task = asyncio.create_task(
-        _backend_listener(
-            ws_uri=ws_uri,
+    poller_task = asyncio.create_task(
+        _mongo_poller(
+            mongo_uri=mongo_uri,
+            db_name=args.mongo_db,
+            collection_name=args.mongo_collection,
             scenes_dir=scenes_dir,
             updates=updates,
-            reconnect_seconds=args.reconnect_seconds,
+            poll_seconds=args.mongo_poll_seconds,
         )
     )
 
@@ -280,7 +346,7 @@ async def _main_async(args: argparse.Namespace) -> None:
         )
     )
 
-    await asyncio.gather(listener_task, player_task)
+    await asyncio.gather(poller_task, player_task)
 
 
 def main() -> None:
