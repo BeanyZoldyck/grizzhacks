@@ -1,0 +1,90 @@
+<?xml version='1.0' encoding='utf-8'?>
+<VisionProgramInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Erode />
+  <Dilate />
+  <FlipImage>
+    <ID>0</ID>
+  </FlipImage>
+  <BaseLine />
+  <Configuration>
+    <SchemaVersion>1.3</SchemaVersion>
+    <SaveDate>2026-03-29-06-35-12</SaveDate>
+  </Configuration>
+  <Tool>
+    <ToolName>Tool01</ToolName>
+    <ToolType>Brightness</ToolType>
+    <UseOriginalImage>false</UseOriginalImage>
+    <Filters xsi:type="RGB">
+      <ColorMin xsi:type="xsd:string">Black</ColorMin>
+      <ColorMax xsi:type="xsd:string">Red</ColorMax>
+    </Filters>
+    <Region>
+      <Vertex>
+        <X>120</X>
+        <Y>81</Y>
+      </Vertex>
+      <Vertex>
+        <X>406</X>
+        <Y>81</Y>
+      </Vertex>
+      <Vertex>
+        <X>406</X>
+        <Y>228</Y>
+      </Vertex>
+      <Vertex>
+        <X>120</X>
+        <Y>228</Y>
+      </Vertex>
+      <OriginOffset>
+        <X>0</X>
+        <Y>0</Y>
+      </OriginOffset>
+    </Region>
+    <XLink />
+    <YLink />
+    <AngleLink />
+    <ExcludeFromTrueList>false</ExcludeFromTrueList>
+    <ImageBasedOrigin>true</ImageBasedOrigin>
+    <CenterResult>true</CenterResult>
+    <ThoroughSearch>false</ThoroughSearch>
+    <Inputs>
+      <Key>ThresholdMin</Key>
+      <Value xsi:type="xsd:int">29</Value>
+    </Inputs>
+    <Inputs>
+      <Key>ThresholdMax</Key>
+      <Value xsi:type="xsd:int">255</Value>
+    </Inputs>
+    <Outputs>
+      <Key>InRange</Key>
+      <Enabled>true</Enabled>
+    </Outputs>
+    <Outputs>
+      <Key>Count</Key>
+      <Enabled>false</Enabled>
+    </Outputs>
+    <Outputs>
+      <Key>Avg</Key>
+      <Enabled>false</Enabled>
+    </Outputs>
+  </Tool>
+  <Camera>
+    <CameraType>WEBCAM</CameraType>
+    <VideoMode>
+      <Sensor>COLOR</Sensor>
+      <Width>1104</Width>
+      <Height>828</Height>
+      <FrameRate>10</FrameRate>
+      <PixelFormat>-1</PixelFormat>
+      <SensorMode>-1</SensorMode>
+      <X>0</X>
+      <Y>0</Y>
+    </VideoMode>
+    <DevicePath />
+    <BackupIdentifier />
+    <Name>Generated Camera Step 3</Name>
+    <Alias>Camera1</Alias>
+    <RangeMin>-1</RangeMin>
+    <RangeMax>-1</RangeMax>
+  </Camera>
+</VisionProgramInformation>

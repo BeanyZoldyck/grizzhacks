@@ -1,0 +1,323 @@
+<?xml version='1.0' encoding='utf-8'?>
+<CommandInformation xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://tempuri.org/CommandInformation.xsd">
+  <Metadata>
+    <SoftwareVersion>25.3.4.0</SoftwareVersion>
+    <LicenseSerial>000000</LicenseSerial>
+    <SaveDate>2026-03-29T06:44:57</SaveDate>
+  </Metadata>
+  <Command>
+    <Line>1</Line>
+    <Type>StartProgram</Type>
+    <Description>Introduction_to_LEDs workflow</Description>
+  </Command>
+  <Command>
+    <Line>2</Line>
+    <Type>StepStart</Type>
+    <Description>Step Start</Description>
+    <Comment>Understanding LED Symbols and Polarity</Comment>
+    <Step>1</Step>
+  </Command>
+  <Command>
+    <Line>3</Line>
+    <Type>ClearCanvas</Type>
+    <Description>Clear Canvas [All]</Description>
+    <Canvas>1024</Canvas>
+  </Command>
+  <Command>
+    <Line>4</Line>
+    <Type>VDFText</Type>
+    <Description>"LED Symbol"</Description>
+    <Text>LED Symbol</Text>
+    <Canvas>1</Canvas>
+    <X>100.0</X>
+    <Y>50.0</Y>
+    <Width>200.0</Width>
+    <Height>40.0</Height>
+    <BlinkType>None</BlinkType>
+    <BlinkRate>1000</BlinkRate>
+    <Movements>None</Movements>
+    <FontName>Microsoft Sans Serif</FontName>
+    <TextColor>255,255,255,255</TextColor>
+    <FontSize>24</FontSize>
+    <Justify>0</Justify>
+  </Command>
+  <Command>
+    <Line>5</Line>
+    <Type>VDFGraphics</Type>
+    <Description>Square Outline.svg; Color: 0,255,0</Description>
+    <FileName>Square Outline.svg</FileName>
+    <Canvas>1</Canvas>
+    <X>150.0</X>
+    <Y>150.0</Y>
+    <Width>100.0</Width>
+    <Height>80.0</Height>
+    <BlinkRate>1000</BlinkRate>
+    <Movements>None</Movements>
+    <FilePath>C:\Program Files\OPS Solutions\Light Guide Systems\VDFGraphics\Shapes\Square Outline.svg</FilePath>
+    <FilterColor>0,255,0</FilterColor>
+  </Command>
+  <Command>
+    <Line>6</Line>
+    <Type>VDFText</Type>
+    <Description>"ANODE (+)"</Description>
+    <Text>ANODE (+)</Text>
+    <Canvas>1</Canvas>
+    <X>120.0</X>
+    <Y>250.0</Y>
+    <Width>100.0</Width>
+    <Height>30.0</Height>
+    <BlinkType>None</BlinkType>
+    <BlinkRate>1000</BlinkRate>
+    <Movements>None</Movements>
+    <FontName>Microsoft Sans Serif</FontName>
+    <TextColor>255,0,0,255</TextColor>
+    <FontSize>16</FontSize>
+    <Justify>0</Justify>
+  </Command>
+  <Command>
+    <Line>7</Line>
+    <Type>VDFText</Type>
+    <Description>"CATHODE (-)"</Description>
+    <Text>CATHODE (-)</Text>
+    <Canvas>1</Canvas>
+    <X>250.0</X>
+    <Y>250.0</Y>
+    <Width>120.0</Width>
+    <Height>30.0</Height>
+    <BlinkType>None</BlinkType>
+    <BlinkRate>1000</BlinkRate>
+    <Movements>None</Movements>
+    <FontName>Microsoft Sans Serif</FontName>
+    <TextColor>0,0,255,255</TextColor>
+    <FontSize>16</FontSize>
+    <Justify>0</Justify>
+  </Command>
+  <Command>
+    <Line>8</Line>
+    <Type>Confirmation</Type>
+    <Description>Wait For [Manual Confirmation]</Description>
+    <Variable>Manual Confirmation</Variable>
+    <ConfirmType>Forward</ConfirmType>
+    <StepsToMove>1</StepsToMove>
+  </Command>
+  <Command>
+    <Line>9</Line>
+    <Type>StepStart</Type>
+    <Description>Step Start</Description>
+    <Comment>Identifying LED Polarity Physically</Comment>
+    <Step>2</Step>
+  </Command>
+  <Command>
+    <Line>10</Line>
+    <Type>ClearCanvas</Type>
+    <Description>Clear Canvas [All]</Description>
+    <Canvas>1024</Canvas>
+  </Command>
+  <Command>
+    <Line>11</Line>
+    <Type>VDFText</Type>
+    <Description>"Physical LED Markers"</Description>
+    <Text>Physical LED Markers</Text>
+    <Canvas>1</Canvas>
+    <X>100.0</X>
+    <Y>50.0</Y>
+    <Width>300.0</Width>
+    <Height>40.0</Height>
+    <BlinkType>None</BlinkType>
+    <BlinkRate>1000</BlinkRate>
+    <Movements>None</Movements>
+    <FontName>Microsoft Sans Serif</FontName>
+    <TextColor>255,255,255,255</TextColor>
+    <FontSize>24</FontSize>
+    <Justify>0</Justify>
+  </Command>
+  <Command>
+    <Line>12</Line>
+    <Type>VDFGraphics</Type>
+    <Description>Square Outline.svg; Color: 255,0,0</Description>
+    <FileName>Square Outline.svg</FileName>
+    <Canvas>1</Canvas>
+    <X>200.0</X>
+    <Y>150.0</Y>
+    <Width>200.0</Width>
+    <Height>150.0</Height>
+    <BlinkRate>1000</BlinkRate>
+    <Movements>None</Movements>
+    <FilePath>C:\Program Files\OPS Solutions\Light Guide Systems\VDFGraphics\Shapes\Square Outline.svg</FilePath>
+    <FilterColor>255,0,0</FilterColor>
+  </Command>
+  <Command>
+    <Line>13</Line>
+    <Type>VDFText</Type>
+    <Description>"Shorter Lead = Cathode (-)"</Description>
+    <Text>Shorter Lead = Cathode (-)</Text>
+    <Canvas>1</Canvas>
+    <X>80.0</X>
+    <Y>320.0</Y>
+    <Width>250.0</Width>
+    <Height>30.0</Height>
+    <BlinkType>None</BlinkType>
+    <BlinkRate>1000</BlinkRate>
+    <Movements>None</Movements>
+    <FontName>Microsoft Sans Serif</FontName>
+    <TextColor>255,255,0,255</TextColor>
+    <FontSize>14</FontSize>
+    <Justify>0</Justify>
+  </Command>
+  <Command>
+    <Line>14</Line>
+    <Type>VDFText</Type>
+    <Description>"Flat Edge = Cathode (-)"</Description>
+    <Text>Flat Edge = Cathode (-)</Text>
+    <Canvas>1</Canvas>
+    <X>350.0</X>
+    <Y>320.0</Y>
+    <Width>250.0</Width>
+    <Height>30.0</Height>
+    <BlinkType>None</BlinkType>
+    <BlinkRate>1000</BlinkRate>
+    <Movements>None</Movements>
+    <FontName>Microsoft Sans Serif</FontName>
+    <TextColor>255,255,0,255</TextColor>
+    <FontSize>14</FontSize>
+    <Justify>0</Justify>
+  </Command>
+  <Command>
+    <Line>15</Line>
+    <Type>Confirmation</Type>
+    <Description>Wait For [Manual Confirmation]</Description>
+    <Variable>Manual Confirmation</Variable>
+    <ConfirmType>Forward</ConfirmType>
+    <StepsToMove>1</StepsToMove>
+  </Command>
+  <Command>
+    <Line>16</Line>
+    <Type>StepStart</Type>
+    <Description>Step Start</Description>
+    <Comment>LED Circuit with Current Limiting Resistor</Comment>
+    <Step>3</Step>
+  </Command>
+  <Command>
+    <Line>17</Line>
+    <Type>ClearCanvas</Type>
+    <Description>Clear Canvas [All]</Description>
+    <Canvas>1024</Canvas>
+  </Command>
+  <Command>
+    <Line>18</Line>
+    <Type>VDFText</Type>
+    <Description>"LED Circuit Diagram"</Description>
+    <Text>LED Circuit Diagram</Text>
+    <Canvas>1</Canvas>
+    <X>100.0</X>
+    <Y>50.0</Y>
+    <Width>250.0</Width>
+    <Height>40.0</Height>
+    <BlinkType>None</BlinkType>
+    <BlinkRate>1000</BlinkRate>
+    <Movements>None</Movements>
+    <FontName>Microsoft Sans Serif</FontName>
+    <TextColor>255,255,255,255</TextColor>
+    <FontSize>24</FontSize>
+    <Justify>0</Justify>
+  </Command>
+  <Command>
+    <Line>19</Line>
+    <Type>VDFGraphics</Type>
+    <Description>Square Outline.svg; Color: 255,255,255</Description>
+    <FileName>Square Outline.svg</FileName>
+    <Canvas>1</Canvas>
+    <X>100.0</X>
+    <Y>120.0</Y>
+    <Width>400.0</Width>
+    <Height>200.0</Height>
+    <BlinkRate>1000</BlinkRate>
+    <Movements>None</Movements>
+    <FilePath>C:\Program Files\OPS Solutions\Light Guide Systems\VDFGraphics\Shapes\Square Outline.svg</FilePath>
+    <FilterColor>255,255,255</FilterColor>
+  </Command>
+  <Command>
+    <Line>20</Line>
+    <Type>VDFText</Type>
+    <Description>"+5V"</Description>
+    <Text>+5V</Text>
+    <Canvas>1</Canvas>
+    <X>80.0</X>
+    <Y>180.0</Y>
+    <Width>50.0</Width>
+    <Height>30.0</Height>
+    <BlinkType>None</BlinkType>
+    <BlinkRate>1000</BlinkRate>
+    <Movements>None</Movements>
+    <FontName>Microsoft Sans Serif</FontName>
+    <TextColor>255,0,0,255</TextColor>
+    <FontSize>18</FontSize>
+    <Justify>0</Justify>
+  </Command>
+  <Command>
+    <Line>21</Line>
+    <Type>VDFText</Type>
+    <Description>"R"</Description>
+    <Text>R</Text>
+    <Canvas>1</Canvas>
+    <X>240.0</X>
+    <Y>180.0</Y>
+    <Width>30.0</Width>
+    <Height>30.0</Height>
+    <BlinkType>None</BlinkType>
+    <BlinkRate>1000</BlinkRate>
+    <Movements>None</Movements>
+    <FontName>Microsoft Sans Serif</FontName>
+    <TextColor>255,255,0,255</TextColor>
+    <FontSize>18</FontSize>
+    <Justify>0</Justify>
+  </Command>
+  <Command>
+    <Line>22</Line>
+    <Type>VDFText</Type>
+    <Description>"GND"</Description>
+    <Text>GND</Text>
+    <Canvas>1</Canvas>
+    <X>470.0</X>
+    <Y>180.0</Y>
+    <Width>60.0</Width>
+    <Height>30.0</Height>
+    <BlinkType>None</BlinkType>
+    <BlinkRate>1000</BlinkRate>
+    <Movements>None</Movements>
+    <FontName>Microsoft Sans Serif</FontName>
+    <TextColor>0,0,255,255</TextColor>
+    <FontSize>18</FontSize>
+    <Justify>0</Justify>
+  </Command>
+  <Command>
+    <Line>23</Line>
+    <Type>VDFGraphics</Type>
+    <Description>Line.svg; Color: 255,255,255</Description>
+    <FileName>Line.svg</FileName>
+    <Canvas>1</Canvas>
+    <X>100.0</X>
+    <Y>200.0</Y>
+    <Width>450.0</Width>
+    <Height>1</Height>
+    <BlinkRate>1000</BlinkRate>
+    <Movements>None</Movements>
+    <FilePath>C:\Program Files\OPS Solutions\Light Guide Systems\VDFGraphics\Shapes\Line.svg</FilePath>
+    <FilterColor>255,255,255</FilterColor>
+  </Command>
+  <Command>
+    <Line>24</Line>
+    <Type>Confirmation</Type>
+    <Description>Wait For [Manual Confirmation]</Description>
+    <Variable>Manual Confirmation</Variable>
+    <ConfirmType>Forward</ConfirmType>
+    <StepsToMove>1</StepsToMove>
+  </Command>
+  <Command>
+    <Line>25</Line>
+    <Type>EndProgram</Type>
+    <Description>End of Workflow</Description>
+    <FileName>Introduction_to_LEDs.xml</FileName>
+    <FilePath>C:\Program Files\OPS Solutions\Light Guide Systems\VDFPrograms\Introduction_to_LEDs.xml</FilePath>
+  </Command>
+</CommandInformation>

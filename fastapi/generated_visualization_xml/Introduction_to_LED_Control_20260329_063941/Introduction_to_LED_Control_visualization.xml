@@ -1,0 +1,348 @@
+<?xml version='1.0' encoding='utf-8'?>
+<CommandInformation xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://tempuri.org/CommandInformation.xsd">
+  <Metadata>
+    <SoftwareVersion>25.3.4.0</SoftwareVersion>
+    <LicenseSerial>000000</LicenseSerial>
+    <SaveDate>2026-03-29T06:39:41</SaveDate>
+  </Metadata>
+  <Command>
+    <Line>1</Line>
+    <Type>StartProgram</Type>
+    <Description>Introduction_to_LED_Control workflow</Description>
+  </Command>
+  <Command>
+    <Line>2</Line>
+    <Type>StepStart</Type>
+    <Description>Step Start</Description>
+    <Comment>Understanding LED basics</Comment>
+    <Step>1</Step>
+  </Command>
+  <Command>
+    <Line>3</Line>
+    <Type>ClearCanvas</Type>
+    <Description>Clear Canvas [All]</Description>
+    <Canvas>1024</Canvas>
+  </Command>
+  <Command>
+    <Line>4</Line>
+    <Type>VDFText</Type>
+    <Description>"LED Anatomy"</Description>
+    <Text>LED Anatomy</Text>
+    <Canvas>1</Canvas>
+    <X>512.0</X>
+    <Y>50.0</Y>
+    <Width>300.0</Width>
+    <Height>40.0</Height>
+    <BlinkType>None</BlinkType>
+    <BlinkRate>1000</BlinkRate>
+    <Movements>None</Movements>
+    <FontName>Microsoft Sans Serif</FontName>
+    <TextColor>255,255,255,255</TextColor>
+    <FontSize>24</FontSize>
+    <Justify>0</Justify>
+  </Command>
+  <Command>
+    <Line>5</Line>
+    <Type>VDFGraphics</Type>
+    <Description>LED_symbol.svg; Color: 0,255,0</Description>
+    <FileName>LED_symbol.svg</FileName>
+    <Canvas>1</Canvas>
+    <X>462.0</X>
+    <Y>120.0</Y>
+    <Width>100.0</Width>
+    <Height>100.0</Height>
+    <BlinkRate>1000</BlinkRate>
+    <Movements>None</Movements>
+    <FilePath>C:\Program Files\OPS Solutions\Light Guide Systems\VDFGraphics\Shapes\LED_symbol.svg</FilePath>
+    <FilterColor>0,255,0</FilterColor>
+  </Command>
+  <Command>
+    <Line>6</Line>
+    <Type>VDFText</Type>
+    <Description>"Anode (+)"</Description>
+    <Text>Anode (+)</Text>
+    <Canvas>1</Canvas>
+    <X>350.0</X>
+    <Y>140.0</Y>
+    <Width>100.0</Width>
+    <Height>30.0</Height>
+    <BlinkType>None</BlinkType>
+    <BlinkRate>1000</BlinkRate>
+    <Movements>None</Movements>
+    <FontName>Microsoft Sans Serif</FontName>
+    <TextColor>255,255,0,255</TextColor>
+    <FontSize>16</FontSize>
+    <Justify>0</Justify>
+  </Command>
+  <Command>
+    <Line>7</Line>
+    <Type>VDFText</Type>
+    <Description>"Cathode (-)"</Description>
+    <Text>Cathode (-)</Text>
+    <Canvas>1</Canvas>
+    <X>580.0</X>
+    <Y>140.0</Y>
+    <Width>100.0</Width>
+    <Height>30.0</Height>
+    <BlinkType>None</BlinkType>
+    <BlinkRate>1000</BlinkRate>
+    <Movements>None</Movements>
+    <FontName>Microsoft Sans Serif</FontName>
+    <TextColor>255,0,0,255</TextColor>
+    <FontSize>16</FontSize>
+    <Justify>0</Justify>
+  </Command>
+  <Command>
+    <Line>8</Line>
+    <Type>VDFGraphics</Type>
+    <Description>Line.svg; Color: 100,100,100</Description>
+    <FileName>Line.svg</FileName>
+    <Canvas>1</Canvas>
+    <X>250.0</X>
+    <Y>350.0</Y>
+    <Width>500.0</Width>
+    <Height>1</Height>
+    <BlinkRate>1000</BlinkRate>
+    <Movements>None</Movements>
+    <FilePath>C:\Program Files\OPS Solutions\Light Guide Systems\VDFGraphics\Shapes\Line.svg</FilePath>
+    <FilterColor>100,100,100</FilterColor>
+  </Command>
+  <Command>
+    <Line>9</Line>
+    <Type>Confirmation</Type>
+    <Description>Wait For [Manual Confirmation]</Description>
+    <Variable>Manual Confirmation</Variable>
+    <ConfirmType>Forward</ConfirmType>
+    <StepsToMove>1</StepsToMove>
+  </Command>
+  <Command>
+    <Line>10</Line>
+    <Type>StepStart</Type>
+    <Description>Step Start</Description>
+    <Comment>Connecting LED to microcontroller</Comment>
+    <Step>2</Step>
+  </Command>
+  <Command>
+    <Line>11</Line>
+    <Type>ClearCanvas</Type>
+    <Description>Clear Canvas [All]</Description>
+    <Canvas>1024</Canvas>
+  </Command>
+  <Command>
+    <Line>12</Line>
+    <Type>VDFText</Type>
+    <Description>"LED Circuit Diagram"</Description>
+    <Text>LED Circuit Diagram</Text>
+    <Canvas>1</Canvas>
+    <X>512.0</X>
+    <Y>50.0</Y>
+    <Width>300.0</Width>
+    <Height>40.0</Height>
+    <BlinkType>None</BlinkType>
+    <BlinkRate>1000</BlinkRate>
+    <Movements>None</Movements>
+    <FontName>Microsoft Sans Serif</FontName>
+    <TextColor>255,255,255,255</TextColor>
+    <FontSize>24</FontSize>
+    <Justify>0</Justify>
+  </Command>
+  <Command>
+    <Line>13</Line>
+    <Type>VDFText</Type>
+    <Description>"GPIO Pin 13"</Description>
+    <Text>GPIO Pin 13</Text>
+    <Canvas>1</Canvas>
+    <X>100.0</X>
+    <Y>180.0</Y>
+    <Width>150.0</Width>
+    <Height>30.0</Height>
+    <BlinkType>None</BlinkType>
+    <BlinkRate>1000</BlinkRate>
+    <Movements>None</Movements>
+    <FontName>Microsoft Sans Serif</FontName>
+    <TextColor>0,255,255,255</TextColor>
+    <FontSize>16</FontSize>
+    <Justify>0</Justify>
+  </Command>
+  <Command>
+    <Line>14</Line>
+    <Type>VDFText</Type>
+    <Description>"330Ω"</Description>
+    <Text>330Ω</Text>
+    <Canvas>1</Canvas>
+    <X>380.0</X>
+    <Y>180.0</Y>
+    <Width>80.0</Width>
+    <Height>30.0</Height>
+    <BlinkType>None</BlinkType>
+    <BlinkRate>1000</BlinkRate>
+    <Movements>None</Movements>
+    <FontName>Microsoft Sans Serif</FontName>
+    <TextColor>255,255,0,255</TextColor>
+    <FontSize>16</FontSize>
+    <Justify>0</Justify>
+  </Command>
+  <Command>
+    <Line>15</Line>
+    <Type>VDFText</Type>
+    <Description>"GND"</Description>
+    <Text>GND</Text>
+    <Canvas>1</Canvas>
+    <X>800.0</X>
+    <Y>180.0</Y>
+    <Width>80.0</Width>
+    <Height>30.0</Height>
+    <BlinkType>None</BlinkType>
+    <BlinkRate>1000</BlinkRate>
+    <Movements>None</Movements>
+    <FontName>Microsoft Sans Serif</FontName>
+    <TextColor>0,255,0,255</TextColor>
+    <FontSize>16</FontSize>
+    <Justify>0</Justify>
+  </Command>
+  <Command>
+    <Line>16</Line>
+    <Type>VDFGraphics</Type>
+    <Description>circuit_diagram.svg; Color: 0,255,0</Description>
+    <FileName>circuit_diagram.svg</FileName>
+    <Canvas>1</Canvas>
+    <X>262.0</X>
+    <Y>250.0</Y>
+    <Width>500.0</Width>
+    <Height>200.0</Height>
+    <BlinkRate>1000</BlinkRate>
+    <Movements>None</Movements>
+    <FilePath>C:\Program Files\OPS Solutions\Light Guide Systems\VDFGraphics\Shapes\circuit_diagram.svg</FilePath>
+    <FilterColor>0,255,0</FilterColor>
+  </Command>
+  <Command>
+    <Line>17</Line>
+    <Type>Confirmation</Type>
+    <Description>Wait For [Manual Confirmation]</Description>
+    <Variable>Manual Confirmation</Variable>
+    <ConfirmType>Forward</ConfirmType>
+    <StepsToMove>1</StepsToMove>
+  </Command>
+  <Command>
+    <Line>18</Line>
+    <Type>StepStart</Type>
+    <Description>Step Start</Description>
+    <Comment>Writing LED control code</Comment>
+    <Step>3</Step>
+  </Command>
+  <Command>
+    <Line>19</Line>
+    <Type>ClearCanvas</Type>
+    <Description>Clear Canvas [All]</Description>
+    <Canvas>1024</Canvas>
+  </Command>
+  <Command>
+    <Line>20</Line>
+    <Type>VDFText</Type>
+    <Description>"LED Control Code"</Description>
+    <Text>LED Control Code</Text>
+    <Canvas>1</Canvas>
+    <X>512.0</X>
+    <Y>50.0</Y>
+    <Width>300.0</Width>
+    <Height>40.0</Height>
+    <BlinkType>None</BlinkType>
+    <BlinkRate>1000</BlinkRate>
+    <Movements>None</Movements>
+    <FontName>Microsoft Sans Serif</FontName>
+    <TextColor>255,255,255,255</TextColor>
+    <FontSize>24</FontSize>
+    <Justify>0</Justify>
+  </Command>
+  <Command>
+    <Line>21</Line>
+    <Type>VDFText</Type>
+    <Description>"int LED_PIN = 13;
+
+void setup() {
+  pinMode(LED_PIN, OUTPUT);
+}
+
+void loop() {
+  digitalWrite(LED_PIN, HIGH);
+  delay(1000);
+  digitalWrite(LED_PIN, LOW);
+  delay(1000);
+}"</Description>
+    <Text>int LED_PIN = 13;
+
+void setup() {
+  pinMode(LED_PIN, OUTPUT);
+}
+
+void loop() {
+  digitalWrite(LED_PIN, HIGH);
+  delay(1000);
+  digitalWrite(LED_PIN, LOW);
+  delay(1000);
+}</Text>
+    <Canvas>1</Canvas>
+    <X>256.0</X>
+    <Y>120.0</Y>
+    <Width>512.0</Width>
+    <Height>300.0</Height>
+    <BlinkType>None</BlinkType>
+    <BlinkRate>1000</BlinkRate>
+    <Movements>None</Movements>
+    <FontName>Microsoft Sans Serif</FontName>
+    <TextColor>0,255,0,255</TextColor>
+    <FontSize>14</FontSize>
+    <Justify>0</Justify>
+  </Command>
+  <Command>
+    <Line>22</Line>
+    <Type>VDFText</Type>
+    <Description>"HIGH = LED ON"</Description>
+    <Text>HIGH = LED ON</Text>
+    <Canvas>1</Canvas>
+    <X>150.0</X>
+    <Y>450.0</Y>
+    <Width>150.0</Width>
+    <Height>30.0</Height>
+    <BlinkType>None</BlinkType>
+    <BlinkRate>1000</BlinkRate>
+    <Movements>None</Movements>
+    <FontName>Microsoft Sans Serif</FontName>
+    <TextColor>0,255,0,255</TextColor>
+    <FontSize>16</FontSize>
+    <Justify>0</Justify>
+  </Command>
+  <Command>
+    <Line>23</Line>
+    <Type>VDFText</Type>
+    <Description>"LOW = LED OFF"</Description>
+    <Text>LOW = LED OFF</Text>
+    <Canvas>1</Canvas>
+    <X>700.0</X>
+    <Y>450.0</Y>
+    <Width>150.0</Width>
+    <Height>30.0</Height>
+    <BlinkType>None</BlinkType>
+    <BlinkRate>1000</BlinkRate>
+    <Movements>None</Movements>
+    <FontName>Microsoft Sans Serif</FontName>
+    <TextColor>255,0,0,255</TextColor>
+    <FontSize>16</FontSize>
+    <Justify>0</Justify>
+  </Command>
+  <Command>
+    <Line>24</Line>
+    <Type>Confirmation</Type>
+    <Description>Wait For [Manual Confirmation]</Description>
+    <Variable>Manual Confirmation</Variable>
+    <ConfirmType>Forward</ConfirmType>
+    <StepsToMove>1</StepsToMove>
+  </Command>
+  <Command>
+    <Line>25</Line>
+    <Type>EndProgram</Type>
+    <Description>End of Workflow</Description>
+    <FileName>Introduction_to_LED_Control.xml</FileName>
+    <FilePath>C:\Program Files\OPS Solutions\Light Guide Systems\VDFPrograms\Introduction_to_LED_Control.xml</FilePath>
+  </Command>
+</CommandInformation>

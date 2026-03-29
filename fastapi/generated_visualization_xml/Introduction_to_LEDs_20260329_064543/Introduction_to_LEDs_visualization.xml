@@ -1,0 +1,434 @@
+<?xml version='1.0' encoding='utf-8'?>
+<CommandInformation xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://tempuri.org/CommandInformation.xsd">
+  <Metadata>
+    <SoftwareVersion>25.3.4.0</SoftwareVersion>
+    <LicenseSerial>000000</LicenseSerial>
+    <SaveDate>2026-03-29T06:45:43</SaveDate>
+  </Metadata>
+  <Command>
+    <Line>1</Line>
+    <Type>StartProgram</Type>
+    <Description>Introduction_to_LEDs workflow</Description>
+  </Command>
+  <Command>
+    <Line>2</Line>
+    <Type>StepStart</Type>
+    <Description>Step Start</Description>
+    <Comment>Understanding LED polarity and basic structure</Comment>
+    <Step>1</Step>
+  </Command>
+  <Command>
+    <Line>3</Line>
+    <Type>ClearCanvas</Type>
+    <Description>Clear Canvas [All]</Description>
+    <Canvas>1024</Canvas>
+  </Command>
+  <Command>
+    <Line>4</Line>
+    <Type>VDFText</Type>
+    <Description>"LED POLARITY"</Description>
+    <Text>LED POLARITY</Text>
+    <Canvas>1</Canvas>
+    <X>512.0</X>
+    <Y>50.0</Y>
+    <Width>400.0</Width>
+    <Height>50.0</Height>
+    <BlinkType>None</BlinkType>
+    <BlinkRate>1000</BlinkRate>
+    <Movements>None</Movements>
+    <FontName>Microsoft Sans Serif</FontName>
+    <TextColor>0,255,255,255</TextColor>
+    <FontSize>32</FontSize>
+    <Justify>0</Justify>
+  </Command>
+  <Command>
+    <Line>5</Line>
+    <Type>VDFText</Type>
+    <Description>"Longer Leg = Anode (+)"</Description>
+    <Text>Longer Leg = Anode (+)</Text>
+    <Canvas>1</Canvas>
+    <X>512.0</X>
+    <Y>150.0</Y>
+    <Width>400.0</Width>
+    <Height>40.0</Height>
+    <BlinkType>None</BlinkType>
+    <BlinkRate>1000</BlinkRate>
+    <Movements>None</Movements>
+    <FontName>Microsoft Sans Serif</FontName>
+    <TextColor>255,255,255,255</TextColor>
+    <FontSize>24</FontSize>
+    <Justify>0</Justify>
+  </Command>
+  <Command>
+    <Line>6</Line>
+    <Type>VDFText</Type>
+    <Description>"Shorter Leg = Cathode (-)"</Description>
+    <Text>Shorter Leg = Cathode (-)</Text>
+    <Canvas>1</Canvas>
+    <X>512.0</X>
+    <Y>200.0</Y>
+    <Width>400.0</Width>
+    <Height>40.0</Height>
+    <BlinkType>None</BlinkType>
+    <BlinkRate>1000</BlinkRate>
+    <Movements>None</Movements>
+    <FontName>Microsoft Sans Serif</FontName>
+    <TextColor>255,255,255,255</TextColor>
+    <FontSize>24</FontSize>
+    <Justify>0</Justify>
+  </Command>
+  <Command>
+    <Line>7</Line>
+    <Type>VDFText</Type>
+    <Description>"Flat Edge = Cathode Side"</Description>
+    <Text>Flat Edge = Cathode Side</Text>
+    <Canvas>1</Canvas>
+    <X>512.0</X>
+    <Y>250.0</Y>
+    <Width>400.0</Width>
+    <Height>40.0</Height>
+    <BlinkType>None</BlinkType>
+    <BlinkRate>1000</BlinkRate>
+    <Movements>None</Movements>
+    <FontName>Microsoft Sans Serif</FontName>
+    <TextColor>255,255,255,255</TextColor>
+    <FontSize>24</FontSize>
+    <Justify>0</Justify>
+  </Command>
+  <Command>
+    <Line>8</Line>
+    <Type>VDFGraphics</Type>
+    <Description>Line.svg; Color: 255,0,0</Description>
+    <FileName>Line.svg</FileName>
+    <Canvas>1</Canvas>
+    <X>200.0</X>
+    <Y>450.0</Y>
+    <Width>600.0</Width>
+    <Height>1</Height>
+    <BlinkRate>1000</BlinkRate>
+    <Movements>None</Movements>
+    <FilePath>C:\Program Files\OPS Solutions\Light Guide Systems\VDFGraphics\Shapes\Line.svg</FilePath>
+    <FilterColor>255,0,0</FilterColor>
+  </Command>
+  <Command>
+    <Line>9</Line>
+    <Type>VDFGraphics</Type>
+    <Description>Line.svg; Color: 0,0,255</Description>
+    <FileName>Line.svg</FileName>
+    <Canvas>1</Canvas>
+    <X>200.0</X>
+    <Y>500.0</Y>
+    <Width>600.0</Width>
+    <Height>1</Height>
+    <BlinkRate>1000</BlinkRate>
+    <Movements>None</Movements>
+    <FilePath>C:\Program Files\OPS Solutions\Light Guide Systems\VDFGraphics\Shapes\Line.svg</FilePath>
+    <FilterColor>0,0,255</FilterColor>
+  </Command>
+  <Command>
+    <Line>10</Line>
+    <Type>Confirmation</Type>
+    <Description>Wait For [Manual Confirmation]</Description>
+    <Variable>Manual Confirmation</Variable>
+    <ConfirmType>Forward</ConfirmType>
+    <StepsToMove>1</StepsToMove>
+  </Command>
+  <Command>
+    <Line>11</Line>
+    <Type>StepStart</Type>
+    <Description>Step Start</Description>
+    <Comment>Wiring an LED with current-limiting resistor</Comment>
+    <Step>2</Step>
+  </Command>
+  <Command>
+    <Line>12</Line>
+    <Type>ClearCanvas</Type>
+    <Description>Clear Canvas [All]</Description>
+    <Canvas>1024</Canvas>
+  </Command>
+  <Command>
+    <Line>13</Line>
+    <Type>VDFText</Type>
+    <Description>"LED CIRCUIT"</Description>
+    <Text>LED CIRCUIT</Text>
+    <Canvas>1</Canvas>
+    <X>512.0</X>
+    <Y>50.0</Y>
+    <Width>400.0</Width>
+    <Height>50.0</Height>
+    <BlinkType>None</BlinkType>
+    <BlinkRate>1000</BlinkRate>
+    <Movements>None</Movements>
+    <FontName>Microsoft Sans Serif</FontName>
+    <TextColor>0,255,0,255</TextColor>
+    <FontSize>32</FontSize>
+    <Justify>0</Justify>
+  </Command>
+  <Command>
+    <Line>14</Line>
+    <Type>VDFText</Type>
+    <Description>"Microcontroller Pin -&gt; Resistor (220-330 ohm) -&gt; LED Anode"</Description>
+    <Text>Microcontroller Pin -&gt; Resistor (220-330 ohm) -&gt; LED Anode</Text>
+    <Canvas>1</Canvas>
+    <X>512.0</X>
+    <Y>150.0</Y>
+    <Width>700.0</Width>
+    <Height>40.0</Height>
+    <BlinkType>None</BlinkType>
+    <BlinkRate>1000</BlinkRate>
+    <Movements>None</Movements>
+    <FontName>Microsoft Sans Serif</FontName>
+    <TextColor>255,255,255,255</TextColor>
+    <FontSize>20</FontSize>
+    <Justify>0</Justify>
+  </Command>
+  <Command>
+    <Line>15</Line>
+    <Type>VDFText</Type>
+    <Description>"LED Cathode -&gt; GND"</Description>
+    <Text>LED Cathode -&gt; GND</Text>
+    <Canvas>1</Canvas>
+    <X>512.0</X>
+    <Y>200.0</Y>
+    <Width>700.0</Width>
+    <Height>40.0</Height>
+    <BlinkType>None</BlinkType>
+    <BlinkRate>1000</BlinkRate>
+    <Movements>None</Movements>
+    <FontName>Microsoft Sans Serif</FontName>
+    <TextColor>255,255,255,255</TextColor>
+    <FontSize>20</FontSize>
+    <Justify>0</Justify>
+  </Command>
+  <Command>
+    <Line>16</Line>
+    <Type>VDFGraphics</Type>
+    <Description>led_circuit.svg; Color: 255,255,0</Description>
+    <FileName>led_circuit.svg</FileName>
+    <Canvas>1</Canvas>
+    <X>362.0</X>
+    <Y>300.0</Y>
+    <Width>300.0</Width>
+    <Height>200.0</Height>
+    <BlinkRate>1000</BlinkRate>
+    <Movements>None</Movements>
+    <FilePath>C:\Program Files\OPS Solutions\Light Guide Systems\VDFGraphics\Shapes\led_circuit.svg</FilePath>
+    <FilterColor>255,255,0</FilterColor>
+  </Command>
+  <Command>
+    <Line>17</Line>
+    <Type>Confirmation</Type>
+    <Description>Wait For [Manual Confirmation]</Description>
+    <Variable>Manual Confirmation</Variable>
+    <ConfirmType>Forward</ConfirmType>
+    <StepsToMove>1</StepsToMove>
+  </Command>
+  <Command>
+    <Line>18</Line>
+    <Type>StepStart</Type>
+    <Description>Step Start</Description>
+    <Comment>Programming an LED to blink</Comment>
+    <Step>3</Step>
+  </Command>
+  <Command>
+    <Line>19</Line>
+    <Type>ClearCanvas</Type>
+    <Description>Clear Canvas [All]</Description>
+    <Canvas>1024</Canvas>
+  </Command>
+  <Command>
+    <Line>20</Line>
+    <Type>VDFText</Type>
+    <Description>"BLINKING LED CODE"</Description>
+    <Text>BLINKING LED CODE</Text>
+    <Canvas>1</Canvas>
+    <X>512.0</X>
+    <Y>50.0</Y>
+    <Width>400.0</Width>
+    <Height>50.0</Height>
+    <BlinkType>None</BlinkType>
+    <BlinkRate>1000</BlinkRate>
+    <Movements>None</Movements>
+    <FontName>Microsoft Sans Serif</FontName>
+    <TextColor>255,255,0,255</TextColor>
+    <FontSize>32</FontSize>
+    <Justify>0</Justify>
+  </Command>
+  <Command>
+    <Line>21</Line>
+    <Type>VDFText</Type>
+    <Description>"void setup() {"</Description>
+    <Text>void setup() {</Text>
+    <Canvas>1</Canvas>
+    <X>512.0</X>
+    <Y>150.0</Y>
+    <Width>400.0</Width>
+    <Height>30.0</Height>
+    <BlinkType>None</BlinkType>
+    <BlinkRate>1000</BlinkRate>
+    <Movements>None</Movements>
+    <FontName>Microsoft Sans Serif</FontName>
+    <TextColor>0,255,0,255</TextColor>
+    <FontSize>18</FontSize>
+    <Justify>0</Justify>
+  </Command>
+  <Command>
+    <Line>22</Line>
+    <Type>VDFText</Type>
+    <Description>"pinMode(LED_BUILTIN, OUTPUT);"</Description>
+    <Text>pinMode(LED_BUILTIN, OUTPUT);</Text>
+    <Canvas>1</Canvas>
+    <X>512.0</X>
+    <Y>190.0</Y>
+    <Width>400.0</Width>
+    <Height>30.0</Height>
+    <BlinkType>None</BlinkType>
+    <BlinkRate>1000</BlinkRate>
+    <Movements>None</Movements>
+    <FontName>Microsoft Sans Serif</FontName>
+    <TextColor>255,255,255,255</TextColor>
+    <FontSize>18</FontSize>
+    <Justify>0</Justify>
+  </Command>
+  <Command>
+    <Line>23</Line>
+    <Type>VDFText</Type>
+    <Description>"}"</Description>
+    <Text>}</Text>
+    <Canvas>1</Canvas>
+    <X>512.0</X>
+    <Y>230.0</Y>
+    <Width>400.0</Width>
+    <Height>30.0</Height>
+    <BlinkType>None</BlinkType>
+    <BlinkRate>1000</BlinkRate>
+    <Movements>None</Movements>
+    <FontName>Microsoft Sans Serif</FontName>
+    <TextColor>0,255,0,255</TextColor>
+    <FontSize>18</FontSize>
+    <Justify>0</Justify>
+  </Command>
+  <Command>
+    <Line>24</Line>
+    <Type>VDFText</Type>
+    <Description>"void loop() {"</Description>
+    <Text>void loop() {</Text>
+    <Canvas>1</Canvas>
+    <X>512.0</X>
+    <Y>280.0</Y>
+    <Width>400.0</Width>
+    <Height>30.0</Height>
+    <BlinkType>None</BlinkType>
+    <BlinkRate>1000</BlinkRate>
+    <Movements>None</Movements>
+    <FontName>Microsoft Sans Serif</FontName>
+    <TextColor>0,255,0,255</TextColor>
+    <FontSize>18</FontSize>
+    <Justify>0</Justify>
+  </Command>
+  <Command>
+    <Line>25</Line>
+    <Type>VDFText</Type>
+    <Description>"digitalWrite(LED_BUILTIN, HIGH);"</Description>
+    <Text>digitalWrite(LED_BUILTIN, HIGH);</Text>
+    <Canvas>1</Canvas>
+    <X>512.0</X>
+    <Y>320.0</Y>
+    <Width>400.0</Width>
+    <Height>30.0</Height>
+    <BlinkType>None</BlinkType>
+    <BlinkRate>1000</BlinkRate>
+    <Movements>None</Movements>
+    <FontName>Microsoft Sans Serif</FontName>
+    <TextColor>255,255,255,255</TextColor>
+    <FontSize>18</FontSize>
+    <Justify>0</Justify>
+  </Command>
+  <Command>
+    <Line>26</Line>
+    <Type>VDFText</Type>
+    <Description>"delay(1000);"</Description>
+    <Text>delay(1000);</Text>
+    <Canvas>1</Canvas>
+    <X>512.0</X>
+    <Y>360.0</Y>
+    <Width>400.0</Width>
+    <Height>30.0</Height>
+    <BlinkType>None</BlinkType>
+    <BlinkRate>1000</BlinkRate>
+    <Movements>None</Movements>
+    <FontName>Microsoft Sans Serif</FontName>
+    <TextColor>255,255,255,255</TextColor>
+    <FontSize>18</FontSize>
+    <Justify>0</Justify>
+  </Command>
+  <Command>
+    <Line>27</Line>
+    <Type>VDFText</Type>
+    <Description>"digitalWrite(LED_BUILTIN, LOW);"</Description>
+    <Text>digitalWrite(LED_BUILTIN, LOW);</Text>
+    <Canvas>1</Canvas>
+    <X>512.0</X>
+    <Y>400.0</Y>
+    <Width>400.0</Width>
+    <Height>30.0</Height>
+    <BlinkType>None</BlinkType>
+    <BlinkRate>1000</BlinkRate>
+    <Movements>None</Movements>
+    <FontName>Microsoft Sans Serif</FontName>
+    <TextColor>255,255,255,255</TextColor>
+    <FontSize>18</FontSize>
+    <Justify>0</Justify>
+  </Command>
+  <Command>
+    <Line>28</Line>
+    <Type>VDFText</Type>
+    <Description>"delay(1000);"</Description>
+    <Text>delay(1000);</Text>
+    <Canvas>1</Canvas>
+    <X>512.0</X>
+    <Y>440.0</Y>
+    <Width>400.0</Width>
+    <Height>30.0</Height>
+    <BlinkType>None</BlinkType>
+    <BlinkRate>1000</BlinkRate>
+    <Movements>None</Movements>
+    <FontName>Microsoft Sans Serif</FontName>
+    <TextColor>255,255,255,255</TextColor>
+    <FontSize>18</FontSize>
+    <Justify>0</Justify>
+  </Command>
+  <Command>
+    <Line>29</Line>
+    <Type>VDFText</Type>
+    <Description>"}"</Description>
+    <Text>}</Text>
+    <Canvas>1</Canvas>
+    <X>512.0</X>
+    <Y>480.0</Y>
+    <Width>400.0</Width>
+    <Height>30.0</Height>
+    <BlinkType>None</BlinkType>
+    <BlinkRate>1000</BlinkRate>
+    <Movements>None</Movements>
+    <FontName>Microsoft Sans Serif</FontName>
+    <TextColor>0,255,0,255</TextColor>
+    <FontSize>18</FontSize>
+    <Justify>0</Justify>
+  </Command>
+  <Command>
+    <Line>30</Line>
+    <Type>Confirmation</Type>
+    <Description>Wait For [Manual Confirmation]</Description>
+    <Variable>Manual Confirmation</Variable>
+    <ConfirmType>Forward</ConfirmType>
+    <StepsToMove>1</StepsToMove>
+  </Command>
+  <Command>
+    <Line>31</Line>
+    <Type>EndProgram</Type>
+    <Description>End of Workflow</Description>
+    <FileName>Introduction_to_LEDs.xml</FileName>
+    <FilePath>C:\Program Files\OPS Solutions\Light Guide Systems\VDFPrograms\Introduction_to_LEDs.xml</FilePath>
+  </Command>
+</CommandInformation>

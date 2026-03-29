@@ -30,6 +30,21 @@ python ai_lesson.py --query "Create a 4-step lesson for wiring an LED with ESP32
 python ai_lesson.py --query "Create a 3-step LED lesson" --dry-run
 
 python ai_lesson.py --query "Create a 5-step sensor lesson" --save-json sensor_lesson.json
+
+# Flash firmware after lesson processing (uses PlatformIO upload target)
+python ai_lesson.py --query "Create a 4-step ESP32 lesson" --flash-hardware
+
+# Write firmware from lesson only (no upload)
+python ai_lesson.py --query "Create a 4-step ESP32 lesson" --write-firmware
+
+# Generate slideshow PDF from lesson data
+python ai_lesson.py --query "Create a 4-step ESP32 lesson" --generate-slideshow
+
+# Run slideshow generation in parallel with XML generation, then open the PDF
+python ai_lesson.py --query "Create a 4-step ESP32 lesson" --save-tool-xml-dir client/xml --generate-slideshow --open-slideshow
+
+# Override defaults if needed
+python ai_lesson.py --query "Create a lesson..." --flash-hardware --platformio-env esp32-c3 --platformio-project-dir .. --platformio-cmd platformio
 ```
 
 #### Advanced Options
@@ -111,6 +126,9 @@ The JSON file can be either:
 
 1. LLM generates lesson steps (JSON)
 2. `send_lesson.py` / `ai_lesson.py` insert a document into MongoDB
+3. Optional: `ai_lesson.py --generate-slideshow` creates lesson PDF slides
+4. Optional: `ai_lesson.py --write-firmware` renders `src/main.cpp` from lesson steps
+5. Optional: `ai_lesson.py --flash-hardware` uploads firmware with PlatformIO
 
 ## Voice from phone (same LAN)
 
