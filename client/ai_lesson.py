@@ -12,12 +12,18 @@ import asyncio
 import json
 import os
 import sys
+from datetime import datetime
 from pathlib import Path
+from typing import Any
+import xml.etree.ElementTree as ET
 
-sys.path.insert(0, str(Path(__file__).parent.parent / "mongo"))
+_ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(_ROOT / "mongo"))
+sys.path.insert(0, str(_ROOT))
 
 from dotenv import load_dotenv
 
+from coordinate_transform import viz_to_tool
 from lesson_cloud import send_lesson_to_mongodb
 from websocket_client import load_env
 
@@ -59,6 +65,177 @@ Visual types:
 Coordinates: 0-1024 range. Colors: RGB format (0,255,0).
 
 Return ONLY valid JSON, no markdown, no explanations."""
+
+
+def _tool_xml_value(parent: ET.Element, key: str, value: Any) -> None:
+    ET.SubElement(parent, key).text = str(value)
+
+
+def _build_tool_box_vertices(
+    x_viz: float,
+    y_viz: float,
+    width_viz: float,
+    height_viz: float,
+) -> list[tuple[int, int]]:
+    x1_tool, y1_tool = viz_to_tool(x_viz, y_viz)
+    x2_tool, y2_tool = viz_to_tool(x_viz + width_viz, y_viz + height_viz)
+    x_min = int(round(min(x1_tool, x2_tool)))
+    x_max = int(round(max(x1_tool, x2_tool)))
+    y_min = int(round(min(y1_tool, y2_tool)))
+    y_max = int(round(max(y1_tool, y2_tool)))
+    return [(x_min, y_min), (x_max, y_min), (x_max, y_max), (x_min, y_max)]
+
+
+def _build_tool_xml_for_step(step: dict[str, Any], *, step_number: int) -> ET.Element:
+    root = ET.Element(
+        "VisionProgramInformation",
+        {
+            "xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+        },
+    )
+    ET.SubElement(root, "Erode")
+    ET.SubElement(root, "Dilate")
+    flip_image = ET.SubElement(root, "FlipImage")
+    _tool_xml_value(flip_image, "ID", 0)
+    ET.SubElement(root, "BaseLine")
+    config = ET.SubElement(root, "Configuration")
+    _tool_xml_value(config, "SchemaVersion", "1.3")
+    _tool_xml_value(config, "SaveDate", datetime.now().strftime("%Y-%m-%d-%H-%M-%S"))
+
+    visuals = step.get("visuals")
+    if not isinstance(visuals, list):
+        visuals = []
+
+    tool_index = 1
+    for visual in visuals:
+        if not isinstance(visual, dict):
+            continue
+        visual_type = str(visual.get("type", "")).strip()
+        if visual_type not in {"Graphics", "VDFGraphics"}:
+            continue
+        try:
+            x = float(visual["x"])
+            y = float(visual["y"])
+            width = float(visual["width"])
+            height = float(visual["height"])
+        except (KeyError, TypeError, ValueError):
+            continue
+        if width <= 0 or height <= 0:
+            continue
+
+        vertices = _build_tool_box_vertices(x, y, width, height)
+        tool = ET.SubElement(root, "Tool")
+        _tool_xml_value(tool, "ToolName", f"Tool{tool_index:02d}")
+        _tool_xml_value(tool, "ToolType", "Brightness")
+        _tool_xml_value(tool, "UseOriginalImage", "false")
+
+        filters = ET.SubElement(tool, "Filters")
+        filters.set("{http://www.w3.org/2001/XMLSchema-instance}type", "RGB")
+        color_min = ET.SubElement(filters, "ColorMin")
+        color_min.set("{http://www.w3.org/2001/XMLSchema-instance}type", "xsd:string")
+        color_min.text = "Black"
+        color_max = ET.SubElement(filters, "ColorMax")
+        color_max.set("{http://www.w3.org/2001/XMLSchema-instance}type", "xsd:string")
+        color_max.text = "Red"
+
+        region = ET.SubElement(tool, "Region")
+        for vx, vy in vertices:
+            vertex = ET.SubElement(region, "Vertex")
+            _tool_xml_value(vertex, "X", vx)
+            _tool_xml_value(vertex, "Y", vy)
+        origin_offset = ET.SubElement(region, "OriginOffset")
+        _tool_xml_value(origin_offset, "X", 0)
+        _tool_xml_value(origin_offset, "Y", 0)
+
+        ET.SubElement(tool, "XLink")
+        ET.SubElement(tool, "YLink")
+        ET.SubElement(tool, "AngleLink")
+        _tool_xml_value(tool, "ExcludeFromTrueList", "false")
+        _tool_xml_value(tool, "ImageBasedOrigin", "true")
+        _tool_xml_value(tool, "CenterResult", "true")
+        _tool_xml_value(tool, "ThoroughSearch", "false")
+
+        for key, value in (("ThresholdMin", 29), ("ThresholdMax", 255)):
+            inputs = ET.SubElement(tool, "Inputs")
+            _tool_xml_value(inputs, "Key", key)
+            val = ET.SubElement(inputs, "Value")
+            val.set("{http://www.w3.org/2001/XMLSchema-instance}type", "xsd:int")
+            val.text = str(value)
+
+        for key, enabled in (("InRange", "true"), ("Count", "false"), ("Avg", "false")):
+            outputs = ET.SubElement(tool, "Outputs")
+            _tool_xml_value(outputs, "Key", key)
+            _tool_xml_value(outputs, "Enabled", enabled)
+
+        tool_index += 1
+
+    camera = ET.SubElement(root, "Camera")
+    _tool_xml_value(camera, "CameraType", "WEBCAM")
+    video_mode = ET.SubElement(camera, "VideoMode")
+    _tool_xml_value(video_mode, "Sensor", "COLOR")
+    _tool_xml_value(video_mode, "Width", 1104)
+    _tool_xml_value(video_mode, "Height", 828)
+    _tool_xml_value(video_mode, "FrameRate", 10)
+    _tool_xml_value(video_mode, "PixelFormat", -1)
+    _tool_xml_value(video_mode, "SensorMode", -1)
+    _tool_xml_value(video_mode, "X", 0)
+    _tool_xml_value(video_mode, "Y", 0)
+    _tool_xml_value(camera, "DevicePath", "")
+    ET.SubElement(camera, "BackupIdentifier")
+    _tool_xml_value(camera, "Name", f"Generated Camera Step {step_number}")
+    _tool_xml_value(camera, "Alias", "Camera1")
+    _tool_xml_value(camera, "RangeMin", -1)
+    _tool_xml_value(camera, "RangeMax", -1)
+    return root
+
+
+def save_tool_xml_files(
+    lesson_name: str,
+    steps: list[dict[str, Any]],
+    output_dir: str,
+) -> list[dict[str, Any]]:
+    """Generate one optical-tool XML per step from lesson visual boxes.
+
+    Returns artifact descriptors that include file path and XML content.
+    """
+    out_dir = Path(output_dir)
+    out_dir.mkdir(parents=True, exist_ok=True)
+
+    lesson_slug = "".join(
+        ch if ch.isalnum() or ch in ("-", "_") else "_"
+        for ch in lesson_name.strip()
+    ) or "Generated_Lesson"
+    artifacts: list[dict[str, Any]] = []
+
+    for idx, step in enumerate(steps, start=1):
+        if not isinstance(step, dict):
+            continue
+        root = _build_tool_xml_for_step(step, step_number=idx)
+        if not root.findall("Tool"):
+            continue
+
+        tree = ET.ElementTree(root)
+        try:
+            ET.indent(tree, space="  ")
+        except AttributeError:
+            pass
+        out_path = out_dir / f"{lesson_slug}_step_{idx:02d}_tool.xml"
+        tree.write(out_path, encoding="utf-8", xml_declaration=True)
+        # Parse back after write to verify this is valid XML and has expected shape.
+        parsed_root = ET.parse(out_path).getroot()
+        if parsed_root.tag != "VisionProgramInformation":
+            raise RuntimeError(f"Invalid tool XML root in {out_path}")
+        if not parsed_root.findall("Tool"):
+            raise RuntimeError(f"Tool XML missing <Tool> entries in {out_path}")
+
+        artifacts.append(
+            {
+                "step": idx,
+                "path": out_path,
+                "xml": out_path.read_text(encoding="utf-8"),
+            }
+        )
+    return artifacts
 
 
 def generate_lesson_with_openai(
@@ -258,6 +435,10 @@ def main() -> None:
         "--save-json",
         help="Save generated lesson JSON to file",
     )
+    parser.add_argument(
+        "--save-tool-xml-dir",
+        help="Directory to write optical tool XML files (one per step)",
+    )
     args = parser.parse_args()
 
     lesson_data: dict
@@ -334,6 +515,31 @@ def main() -> None:
         print(f"✓ Generated lesson: {lesson_name}")
     print(f"✓ {len(steps)} steps")
 
+    tool_xml_artifacts: list[dict[str, Any]] = []
+
+    if args.save_tool_xml_dir:
+        tool_xml_artifacts = save_tool_xml_files(lesson_name, steps, args.save_tool_xml_dir)
+        if tool_xml_artifacts:
+            tool_paths = [str(a["path"]) for a in tool_xml_artifacts]
+            lesson_data["tool_xml_files"] = tool_paths
+            lesson_data["tool_xml_documents"] = [
+                {
+                    "step": a["step"],
+                    "path": str(a["path"]),
+                    "xml": a["xml"],
+                }
+                for a in tool_xml_artifacts
+            ]
+            print(
+                f"✓ Saved {len(tool_xml_artifacts)} tool XML file(s) to {args.save_tool_xml_dir}"
+            )
+            for tool_path in tool_paths:
+                print(f"  - {tool_path}")
+        else:
+            print(
+                "⚠ No tool XML files were generated (no Graphics visuals with valid box dimensions)."
+            )
+
     if args.save_json:
         with open(args.save_json, "w") as f:
             json.dump(lesson_data, f, indent=2)
@@ -354,6 +560,18 @@ def main() -> None:
                     enable_cloud=not args.no_cloud,
                     description=lesson_data.get("description"),
                     source="ai_lesson",
+                    metadata={
+                        "tool_xml_documents": [
+                            {
+                                "step": a["step"],
+                                "path": str(a["path"]),
+                                "xml": a["xml"],
+                            }
+                            for a in tool_xml_artifacts
+                        ]
+                    }
+                    if tool_xml_artifacts
+                    else None,
                 )
             )
         except Exception as e:

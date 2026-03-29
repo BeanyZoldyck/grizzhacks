@@ -1,0 +1,321 @@
+{
+  "lesson_name": "Wiring_an_LED_with_ESP32-C3",
+  "description": "Learn how to safely wire an LED to an ESP32-C3 microcontroller using a current-limiting resistor",
+  "steps": [
+    {
+      "step": 1,
+      "description": "Gather required components",
+      "instruction": "Collect the following components: ESP32-C3 development board, one LED (any color), one 330\u03a9 resistor (or similar), and two jumper wires. Verify the LED polarity - the longer lead is the anode (positive) and the shorter lead is the cathode (negative).",
+      "visuals": [
+        {
+          "type": "Text",
+          "text": "Components Needed:",
+          "x": 50,
+          "y": 50,
+          "width": 300,
+          "height": 40,
+          "font_size": 24,
+          "color": "0,200,255"
+        },
+        {
+          "type": "Text",
+          "text": "\u2022 ESP32-C3 Dev Board",
+          "x": 50,
+          "y": 120,
+          "width": 300,
+          "height": 30,
+          "font_size": 18,
+          "color": "255,255,255"
+        },
+        {
+          "type": "Text",
+          "text": "\u2022 1x LED (any color)",
+          "x": 50,
+          "y": 160,
+          "width": 300,
+          "height": 30,
+          "font_size": 18,
+          "color": "255,255,255"
+        },
+        {
+          "type": "Text",
+          "text": "\u2022 1x 330\u03a9 Resistor",
+          "x": 50,
+          "y": 200,
+          "width": 300,
+          "height": 30,
+          "font_size": 18,
+          "color": "255,255,255"
+        },
+        {
+          "type": "Text",
+          "text": "\u2022 2x Jumper Wires",
+          "x": 50,
+          "y": 240,
+          "width": 300,
+          "height": 30,
+          "font_size": 18,
+          "color": "255,255,255"
+        },
+        {
+          "type": "Graphics",
+          "filename": "led_symbol.svg",
+          "x": 600,
+          "y": 150,
+          "width": 100,
+          "height": 100,
+          "color": "255,0,0"
+        },
+        {
+          "type": "Text",
+          "text": "Anode (+) - Longer lead",
+          "x": 550,
+          "y": 270,
+          "width": 200,
+          "height": 25,
+          "font_size": 14,
+          "color": "255,200,0"
+        },
+        {
+          "type": "Text",
+          "text": "Cathode (-) - Shorter lead",
+          "x": 550,
+          "y": 295,
+          "width": 200,
+          "height": 25,
+          "font_size": 14,
+          "color": "150,150,150"
+        }
+      ]
+    },
+    {
+      "step": 2,
+      "description": "Connect resistor to LED anode",
+      "instruction": "Insert one lead of the 330\u03a9 resistor into the same row as the LED's anode (longer lead). Bend the resistor leads to secure the connection. This resistor limits current flow to protect the LED from burning out.",
+      "visuals": [
+        {
+          "type": "Text",
+          "text": "Step 2: Add Current-Limiting Resistor",
+          "x": 50,
+          "y": 50,
+          "width": 500,
+          "height": 40,
+          "font_size": 22,
+          "color": "0,200,255"
+        },
+        {
+          "type": "Graphics",
+          "filename": "breadboard.svg",
+          "x": 200,
+          "y": 150,
+          "width": 400,
+          "height": 300,
+          "color": "50,50,80"
+        },
+        {
+          "type": "Graphics",
+          "filename": "led_component.svg",
+          "x": 350,
+          "y": 220,
+          "width": 80,
+          "height": 60,
+          "color": "255,0,0"
+        },
+        {
+          "type": "Graphics",
+          "filename": "resistor_component.svg",
+          "x": 250,
+          "y": 220,
+          "width": 80,
+          "height": 40,
+          "color": "165,42,42"
+        },
+        {
+          "type": "Line",
+          "x": 330,
+          "y": 250,
+          "width": 20,
+          "height": 0,
+          "color": "0,255,0"
+        },
+        {
+          "type": "Text",
+          "text": "Resistor (330\u03a9) \u2192 LED Anode",
+          "x": 230,
+          "y": 280,
+          "width": 300,
+          "height": 25,
+          "font_size": 16,
+          "color": "0,255,100"
+        }
+      ]
+    },
+    {
+      "step": 3,
+      "description": "Wire to ESP32-C3 GPIO pin",
+      "instruction": "Connect one jumper wire from the free end of the resistor to GPIO2 (or any available GPIO pin) on the ESP32-C3. This wire carries the signal voltage from the microcontroller to control the LED.",
+      "visuals": [
+        {
+          "type": "Text",
+          "text": "Step 3: Connect to GPIO2",
+          "x": 50,
+          "y": 50,
+          "width": 400,
+          "height": 40,
+          "font_size": 22,
+          "color": "0,200,255"
+        },
+        {
+          "type": "Graphics",
+          "filename": "esp32c3_board.svg",
+          "x": 550,
+          "y": 150,
+          "width": 200,
+          "height": 280,
+          "color": "0,100,150"
+        },
+        {
+          "type": "Text",
+          "text": "ESP32-C3",
+          "x": 580,
+          "y": 165,
+          "width": 150,
+          "height": 30,
+          "font_size": 16,
+          "color": "255,255,255"
+        },
+        {
+          "type": "Text",
+          "text": "GPIO2 \u2192",
+          "x": 400,
+          "y": 200,
+          "width": 120,
+          "height": 30,
+          "font_size": 16,
+          "color": "0,255,100"
+        },
+        {
+          "type": "Line",
+          "x": 520,
+          "y": 215,
+          "width": 30,
+          "height": 0,
+          "color": "255,0,0"
+        },
+        {
+          "type": "Graphics",
+          "filename": "wire.svg",
+          "x": 300,
+          "y": 200,
+          "width": 220,
+          "height": 50,
+          "color": "255,0,0"
+        },
+        {
+          "type": "Text",
+          "text": "Jumper Wire (Signal)",
+          "x": 320,
+          "y": 260,
+          "width": 200,
+          "height": 25,
+          "font_size": 14,
+          "color": "255,100,100"
+        }
+      ]
+    },
+    {
+      "step": 4,
+      "description": "Connect ground wire to complete circuit",
+      "instruction": "Connect a second jumper wire from the LED's cathode (shorter lead, negative) directly to the GND pin on the ESP32-C3. This completes the circuit. The circuit path is: GPIO2 \u2192 Resistor \u2192 LED Anode \u2192 LED Cathode \u2192 GND. Your LED is now wired and ready for programming.",
+      "visuals": [
+        {
+          "type": "Text",
+          "text": "Step 4: Connect Ground (GND)",
+          "x": 50,
+          "y": 50,
+          "width": 400,
+          "height": 40,
+          "font_size": 22,
+          "color": "0,200,255"
+        },
+        {
+          "type": "Graphics",
+          "filename": "complete_circuit.svg",
+          "x": 250,
+          "y": 130,
+          "width": 500,
+          "height": 350,
+          "color": "50,50,50"
+        },
+        {
+          "type": "Text",
+          "text": "Circuit Complete:",
+          "x": 50,
+          "y": 130,
+          "width": 200,
+          "height": 30,
+          "font_size": 18,
+          "color": "0,255,100"
+        },
+        {
+          "type": "Text",
+          "text": "GPIO2 \u2192 330\u03a9 \u2192 LED \u2192 GND",
+          "x": 50,
+          "y": 170,
+          "width": 250,
+          "height": 30,
+          "font_size": 14,
+          "color": "255,255,255"
+        },
+        {
+          "type": "Text",
+          "text": "\u2713 LED Wired Successfully!",
+          "x": 50,
+          "y": 450,
+          "width": 300,
+          "height": 40,
+          "font_size": 24,
+          "color": "0,255,100"
+        },
+        {
+          "type": "Text",
+          "text": "Next: Upload code to control the LED",
+          "x": 50,
+          "y": 500,
+          "width": 350,
+          "height": 30,
+          "font_size": 16,
+          "color": "200,200,200"
+        }
+      ]
+    }
+  ],
+  "tool_xml_files": [
+    "xml/generated_tools/Wiring_an_LED_with_ESP32-C3_step_01_tool.xml",
+    "xml/generated_tools/Wiring_an_LED_with_ESP32-C3_step_02_tool.xml",
+    "xml/generated_tools/Wiring_an_LED_with_ESP32-C3_step_03_tool.xml",
+    "xml/generated_tools/Wiring_an_LED_with_ESP32-C3_step_04_tool.xml"
+  ],
+  "tool_xml_documents": [
+    {
+      "step": 1,
+      "path": "xml/generated_tools/Wiring_an_LED_with_ESP32-C3_step_01_tool.xml",
+      "xml": "<?xml version='1.0' encoding='utf-8'?>\n<VisionProgramInformation xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">\n  <Erode />\n  <Dilate />\n  <FlipImage>\n    <ID>0</ID>\n  </FlipImage>\n  <BaseLine />\n  <Configuration>\n    <SchemaVersion>1.3</SchemaVersion>\n    <SaveDate>2026-03-29-04-30-53</SaveDate>\n  </Configuration>\n  <Tool>\n    <ToolName>Tool01</ToolName>\n    <ToolType>Brightness</ToolType>\n    <UseOriginalImage>false</UseOriginalImage>\n    <Filters xsi:type=\"RGB\">\n      <ColorMin xsi:type=\"xsd:string\">Black</ColorMin>\n      <ColorMax xsi:type=\"xsd:string\">Red</ColorMax>\n    </Filters>\n    <Region>\n      <Vertex>\n        <X>302</X>\n        <Y>107</Y>\n      </Vertex>\n      <Vertex>\n        <X>354</X>\n        <Y>107</Y>\n      </Vertex>\n      <Vertex>\n        <X>354</X>\n        <Y>159</Y>\n      </Vertex>\n      <Vertex>\n        <X>302</X>\n        <Y>159</Y>\n      </Vertex>\n      <OriginOffset>\n        <X>0</X>\n        <Y>0</Y>\n      </OriginOffset>\n    </Region>\n    <XLink />\n    <YLink />\n    <AngleLink />\n    <ExcludeFromTrueList>false</ExcludeFromTrueList>\n    <ImageBasedOrigin>true</ImageBasedOrigin>\n    <CenterResult>true</CenterResult>\n    <ThoroughSearch>false</ThoroughSearch>\n    <Inputs>\n      <Key>ThresholdMin</Key>\n      <Value xsi:type=\"xsd:int\">29</Value>\n    </Inputs>\n    <Inputs>\n      <Key>ThresholdMax</Key>\n      <Value xsi:type=\"xsd:int\">255</Value>\n    </Inputs>\n    <Outputs>\n      <Key>InRange</Key>\n      <Enabled>true</Enabled>\n    </Outputs>\n    <Outputs>\n      <Key>Count</Key>\n      <Enabled>false</Enabled>\n    </Outputs>\n    <Outputs>\n      <Key>Avg</Key>\n      <Enabled>false</Enabled>\n    </Outputs>\n  </Tool>\n  <Camera>\n    <CameraType>WEBCAM</CameraType>\n    <VideoMode>\n      <Sensor>COLOR</Sensor>\n      <Width>1104</Width>\n      <Height>828</Height>\n      <FrameRate>10</FrameRate>\n      <PixelFormat>-1</PixelFormat>\n      <SensorMode>-1</SensorMode>\n      <X>0</X>\n      <Y>0</Y>\n    </VideoMode>\n    <DevicePath />\n    <BackupIdentifier />\n    <Name>Generated Camera Step 1</Name>\n    <Alias>Camera1</Alias>\n    <RangeMin>-1</RangeMin>\n    <RangeMax>-1</RangeMax>\n  </Camera>\n</VisionProgramInformation>"
+    },
+    {
+      "step": 2,
+      "path": "xml/generated_tools/Wiring_an_LED_with_ESP32-C3_step_02_tool.xml",
+      "xml": "<?xml version='1.0' encoding='utf-8'?>\n<VisionProgramInformation xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">\n  <Erode />\n  <Dilate />\n  <FlipImage>\n    <ID>0</ID>\n  </FlipImage>\n  <BaseLine />\n  <Configuration>\n    <SchemaVersion>1.3</SchemaVersion>\n    <SaveDate>2026-03-29-04-30-53</SaveDate>\n  </Configuration>\n  <Tool>\n    <ToolName>Tool01</ToolName>\n    <ToolType>Brightness</ToolType>\n    <UseOriginalImage>false</UseOriginalImage>\n    <Filters xsi:type=\"RGB\">\n      <ColorMin xsi:type=\"xsd:string\">Black</ColorMin>\n      <ColorMax xsi:type=\"xsd:string\">Red</ColorMax>\n    </Filters>\n    <Region>\n      <Vertex>\n        <X>94</X>\n        <Y>107</Y>\n      </Vertex>\n      <Vertex>\n        <X>302</X>\n        <Y>107</Y>\n      </Vertex>\n      <Vertex>\n        <X>302</X>\n        <Y>265</Y>\n      </Vertex>\n      <Vertex>\n        <X>94</X>\n        <Y>265</Y>\n      </Vertex>\n      <OriginOffset>\n        <X>0</X>\n        <Y>0</Y>\n      </OriginOffset>\n    </Region>\n    <XLink />\n    <YLink />\n    <AngleLink />\n    <ExcludeFromTrueList>false</ExcludeFromTrueList>\n    <ImageBasedOrigin>true</ImageBasedOrigin>\n    <CenterResult>true</CenterResult>\n    <ThoroughSearch>false</ThoroughSearch>\n    <Inputs>\n      <Key>ThresholdMin</Key>\n      <Value xsi:type=\"xsd:int\">29</Value>\n    </Inputs>\n    <Inputs>\n      <Key>ThresholdMax</Key>\n      <Value xsi:type=\"xsd:int\">255</Value>\n    </Inputs>\n    <Outputs>\n      <Key>InRange</Key>\n      <Enabled>true</Enabled>\n    </Outputs>\n    <Outputs>\n      <Key>Count</Key>\n      <Enabled>false</Enabled>\n    </Outputs>\n    <Outputs>\n      <Key>Avg</Key>\n      <Enabled>false</Enabled>\n    </Outputs>\n  </Tool>\n  <Tool>\n    <ToolName>Tool02</ToolName>\n    <ToolType>Brightness</ToolType>\n    <UseOriginalImage>false</UseOriginalImage>\n    <Filters xsi:type=\"RGB\">\n      <ColorMin xsi:type=\"xsd:string\">Black</ColorMin>\n      <ColorMax xsi:type=\"xsd:string\">Red</ColorMax>\n    </Filters>\n    <Region>\n      <Vertex>\n        <X>172</X>\n        <Y>144</Y>\n      </Vertex>\n      <Vertex>\n        <X>214</X>\n        <Y>144</Y>\n      </Vertex>\n      <Vertex>\n        <X>214</X>\n        <Y>175</Y>\n      </Vertex>\n      <Vertex>\n        <X>172</X>\n        <Y>175</Y>\n      </Vertex>\n      <OriginOffset>\n        <X>0</X>\n        <Y>0</Y>\n      </OriginOffset>\n    </Region>\n    <XLink />\n    <YLink />\n    <AngleLink />\n    <ExcludeFromTrueList>false</ExcludeFromTrueList>\n    <ImageBasedOrigin>true</ImageBasedOrigin>\n    <CenterResult>true</CenterResult>\n    <ThoroughSearch>false</ThoroughSearch>\n    <Inputs>\n      <Key>ThresholdMin</Key>\n      <Value xsi:type=\"xsd:int\">29</Value>\n    </Inputs>\n    <Inputs>\n      <Key>ThresholdMax</Key>\n      <Value xsi:type=\"xsd:int\">255</Value>\n    </Inputs>\n    <Outputs>\n      <Key>InRange</Key>\n      <Enabled>true</Enabled>\n    </Outputs>\n    <Outputs>\n      <Key>Count</Key>\n      <Enabled>false</Enabled>\n    </Outputs>\n    <Outputs>\n      <Key>Avg</Key>\n      <Enabled>false</Enabled>\n    </Outputs>\n  </Tool>\n  <Tool>\n    <ToolName>Tool03</ToolName>\n    <ToolType>Brightness</ToolType>\n    <UseOriginalImage>false</UseOriginalImage>\n    <Filters xsi:type=\"RGB\">\n      <ColorMin xsi:type=\"xsd:string\">Black</ColorMin>\n      <ColorMax xsi:type=\"xsd:string\">Red</ColorMax>\n    </Filters>\n    <Region>\n      <Vertex>\n        <X>120</X>\n        <Y>144</Y>\n      </Vertex>\n      <Vertex>\n        <X>162</X>\n        <Y>144</Y>\n      </Vertex>\n      <Vertex>\n        <X>162</X>\n        <Y>165</Y>\n      </Vertex>\n      <Vertex>\n        <X>120</X>\n        <Y>165</Y>\n      </Vertex>\n      <OriginOffset>\n        <X>0</X>\n        <Y>0</Y>\n      </OriginOffset>\n    </Region>\n    <XLink />\n    <YLink />\n    <AngleLink />\n    <ExcludeFromTrueList>false</ExcludeFromTrueList>\n    <ImageBasedOrigin>true</ImageBasedOrigin>\n    <CenterResult>true</CenterResult>\n    <ThoroughSearch>false</ThoroughSearch>\n    <Inputs>\n      <Key>ThresholdMin</Key>\n      <Value xsi:type=\"xsd:int\">29</Value>\n    </Inputs>\n    <Inputs>\n      <Key>ThresholdMax</Key>\n      <Value xsi:type=\"xsd:int\">255</Value>\n    </Inputs>\n    <Outputs>\n      <Key>InRange</Key>\n      <Enabled>true</Enabled>\n    </Outputs>\n    <Outputs>\n      <Key>Count</Key>\n      <Enabled>false</Enabled>\n    </Outputs>\n    <Outputs>\n      <Key>Avg</Key>\n      <Enabled>false</Enabled>\n    </Outputs>\n  </Tool>\n  <Camera>\n    <CameraType>WEBCAM</CameraType>\n    <VideoMode>\n      <Sensor>COLOR</Sensor>\n      <Width>1104</Width>\n      <Height>828</Height>\n      <FrameRate>10</FrameRate>\n      <PixelFormat>-1</PixelFormat>\n      <SensorMode>-1</SensorMode>\n      <X>0</X>\n      <Y>0</Y>\n    </VideoMode>\n    <DevicePath />\n    <BackupIdentifier />\n    <Name>Generated Camera Step 2</Name>\n    <Alias>Camera1</Alias>\n    <RangeMin>-1</RangeMin>\n    <RangeMax>-1</RangeMax>\n  </Camera>\n</VisionProgramInformation>"
+    },
+    {
+      "step": 3,
+      "path": "xml/generated_tools/Wiring_an_LED_with_ESP32-C3_step_03_tool.xml",
+      "xml": "<?xml version='1.0' encoding='utf-8'?>\n<VisionProgramInformation xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">\n  <Erode />\n  <Dilate />\n  <FlipImage>\n    <ID>0</ID>\n  </FlipImage>\n  <BaseLine />\n  <Configuration>\n    <SchemaVersion>1.3</SchemaVersion>\n    <SaveDate>2026-03-29-04-30-53</SaveDate>\n  </Configuration>\n  <Tool>\n    <ToolName>Tool01</ToolName>\n    <ToolType>Brightness</ToolType>\n    <UseOriginalImage>false</UseOriginalImage>\n    <Filters xsi:type=\"RGB\">\n      <ColorMin xsi:type=\"xsd:string\">Black</ColorMin>\n      <ColorMax xsi:type=\"xsd:string\">Red</ColorMax>\n    </Filters>\n    <Region>\n      <Vertex>\n        <X>276</X>\n        <Y>107</Y>\n      </Vertex>\n      <Vertex>\n        <X>380</X>\n        <Y>107</Y>\n      </Vertex>\n      <Vertex>\n        <X>380</X>\n        <Y>254</Y>\n      </Vertex>\n      <Vertex>\n        <X>276</X>\n        <Y>254</Y>\n      </Vertex>\n      <OriginOffset>\n        <X>0</X>\n        <Y>0</Y>\n      </OriginOffset>\n    </Region>\n    <XLink />\n    <YLink />\n    <AngleLink />\n    <ExcludeFromTrueList>false</ExcludeFromTrueList>\n    <ImageBasedOrigin>true</ImageBasedOrigin>\n    <CenterResult>true</CenterResult>\n    <ThoroughSearch>false</ThoroughSearch>\n    <Inputs>\n      <Key>ThresholdMin</Key>\n      <Value xsi:type=\"xsd:int\">29</Value>\n    </Inputs>\n    <Inputs>\n      <Key>ThresholdMax</Key>\n      <Value xsi:type=\"xsd:int\">255</Value>\n    </Inputs>\n    <Outputs>\n      <Key>InRange</Key>\n      <Enabled>true</Enabled>\n    </Outputs>\n    <Outputs>\n      <Key>Count</Key>\n      <Enabled>false</Enabled>\n    </Outputs>\n    <Outputs>\n      <Key>Avg</Key>\n      <Enabled>false</Enabled>\n    </Outputs>\n  </Tool>\n  <Tool>\n    <ToolName>Tool02</ToolName>\n    <ToolType>Brightness</ToolType>\n    <UseOriginalImage>false</UseOriginalImage>\n    <Filters xsi:type=\"RGB\">\n      <ColorMin xsi:type=\"xsd:string\">Black</ColorMin>\n      <ColorMax xsi:type=\"xsd:string\">Red</ColorMax>\n    </Filters>\n    <Region>\n      <Vertex>\n        <X>146</X>\n        <Y>133</Y>\n      </Vertex>\n      <Vertex>\n        <X>261</X>\n        <Y>133</Y>\n      </Vertex>\n      <Vertex>\n        <X>261</X>\n        <Y>159</Y>\n      </Vertex>\n      <Vertex>\n        <X>146</X>\n        <Y>159</Y>\n      </Vertex>\n      <OriginOffset>\n        <X>0</X>\n        <Y>0</Y>\n      </OriginOffset>\n    </Region>\n    <XLink />\n    <YLink />\n    <AngleLink />\n    <ExcludeFromTrueList>false</ExcludeFromTrueList>\n    <ImageBasedOrigin>true</ImageBasedOrigin>\n    <CenterResult>true</CenterResult>\n    <ThoroughSearch>false</ThoroughSearch>\n    <Inputs>\n      <Key>ThresholdMin</Key>\n      <Value xsi:type=\"xsd:int\">29</Value>\n    </Inputs>\n    <Inputs>\n      <Key>ThresholdMax</Key>\n      <Value xsi:type=\"xsd:int\">255</Value>\n    </Inputs>\n    <Outputs>\n      <Key>InRange</Key>\n      <Enabled>true</Enabled>\n    </Outputs>\n    <Outputs>\n      <Key>Count</Key>\n      <Enabled>false</Enabled>\n    </Outputs>\n    <Outputs>\n      <Key>Avg</Key>\n      <Enabled>false</Enabled>\n    </Outputs>\n  </Tool>\n  <Camera>\n    <CameraType>WEBCAM</CameraType>\n    <VideoMode>\n      <Sensor>COLOR</Sensor>\n      <Width>1104</Width>\n      <Height>828</Height>\n      <FrameRate>10</FrameRate>\n      <PixelFormat>-1</PixelFormat>\n      <SensorMode>-1</SensorMode>\n      <X>0</X>\n      <Y>0</Y>\n    </VideoMode>\n    <DevicePath />\n    <BackupIdentifier />\n    <Name>Generated Camera Step 3</Name>\n    <Alias>Camera1</Alias>\n    <RangeMin>-1</RangeMin>\n    <RangeMax>-1</RangeMax>\n  </Camera>\n</VisionProgramInformation>"
+    },
+    {
+      "step": 4,
+      "path": "xml/generated_tools/Wiring_an_LED_with_ESP32-C3_step_04_tool.xml",
+      "xml": "<?xml version='1.0' encoding='utf-8'?>\n<VisionProgramInformation xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">\n  <Erode />\n  <Dilate />\n  <FlipImage>\n    <ID>0</ID>\n  </FlipImage>\n  <BaseLine />\n  <Configuration>\n    <SchemaVersion>1.3</SchemaVersion>\n    <SaveDate>2026-03-29-04-30-53</SaveDate>\n  </Configuration>\n  <Tool>\n    <ToolName>Tool01</ToolName>\n    <ToolType>Brightness</ToolType>\n    <UseOriginalImage>false</UseOriginalImage>\n    <Filters xsi:type=\"RGB\">\n      <ColorMin xsi:type=\"xsd:string\">Black</ColorMin>\n      <ColorMax xsi:type=\"xsd:string\">Red</ColorMax>\n    </Filters>\n    <Region>\n      <Vertex>\n        <X>120</X>\n        <Y>96</Y>\n      </Vertex>\n      <Vertex>\n        <X>380</X>\n        <Y>96</Y>\n      </Vertex>\n      <Vertex>\n        <X>380</X>\n        <Y>281</Y>\n      </Vertex>\n      <Vertex>\n        <X>120</X>\n        <Y>281</Y>\n      </Vertex>\n      <OriginOffset>\n        <X>0</X>\n        <Y>0</Y>\n      </OriginOffset>\n    </Region>\n    <XLink />\n    <YLink />\n    <AngleLink />\n    <ExcludeFromTrueList>false</ExcludeFromTrueList>\n    <ImageBasedOrigin>true</ImageBasedOrigin>\n    <CenterResult>true</CenterResult>\n    <ThoroughSearch>false</ThoroughSearch>\n    <Inputs>\n      <Key>ThresholdMin</Key>\n      <Value xsi:type=\"xsd:int\">29</Value>\n    </Inputs>\n    <Inputs>\n      <Key>ThresholdMax</Key>\n      <Value xsi:type=\"xsd:int\">255</Value>\n    </Inputs>\n    <Outputs>\n      <Key>InRange</Key>\n      <Enabled>true</Enabled>\n    </Outputs>\n    <Outputs>\n      <Key>Count</Key>\n      <Enabled>false</Enabled>\n    </Outputs>\n    <Outputs>\n      <Key>Avg</Key>\n      <Enabled>false</Enabled>\n    </Outputs>\n  </Tool>\n  <Camera>\n    <CameraType>WEBCAM</CameraType>\n    <VideoMode>\n      <Sensor>COLOR</Sensor>\n      <Width>1104</Width>\n      <Height>828</Height>\n      <FrameRate>10</FrameRate>\n      <PixelFormat>-1</PixelFormat>\n      <SensorMode>-1</SensorMode>\n      <X>0</X>\n      <Y>0</Y>\n    </VideoMode>\n    <DevicePath />\n    <BackupIdentifier />\n    <Name>Generated Camera Step 4</Name>\n    <Alias>Camera1</Alias>\n    <RangeMin>-1</RangeMin>\n    <RangeMax>-1</RangeMax>\n  </Camera>\n</VisionProgramInformation>"
+    }
+  ]
+}
