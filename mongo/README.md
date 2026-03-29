@@ -57,3 +57,18 @@ Runner responses:
 
 - `{"type":"lightguide_status", ...}`
 - `{"type":"lightguide_error", ...}`
+
+## Demo: run one XML file
+
+Use `demo_run_xml.py` to quickly run a single XML on the LightGuide machine.
+
+```bash
+python demo_run_xml.py /path/to/lesson.xml --lightguide-url http://127.0.0.1:54274 --program-root /path/to/lightguide/programs
+```
+
+Notes:
+
+- With `--program-root`, the XML is copied into `<program-root>/viz/` and then run
+  by relative path (for example, `viz/lesson.xml`).
+- Without `--program-root`, the script passes the XML path directly to
+  `/Programs/Run`.
