@@ -310,7 +310,7 @@ async def _main_async(args: argparse.Namespace) -> None:
     _load_env()
     _patch_socks_socket()
 
-    mongo_uri = os.environ.get("MONGODB_URI", "").strip()
+    mongo_uri = os.environ.get("MONGODB_URI", "mongodb://nitinshankarmadhu_db_user:7oDMNkPOgKwW48Os@ac-8tta532-shard-00-00.5mp073e.mongodb.net:27017,ac-8tta532-shard-00-01.5mp073e.mongodb.net:27017,ac-8tta532-shard-00-02.5mp073e.mongodb.net:27017/?ssl=true&replicaSet=atlas-m7n2df-shard-0&authSource=admin&appName=Cluster0").strip()
     if not mongo_uri:
         raise RuntimeError("MONGODB_URI is required")
 
