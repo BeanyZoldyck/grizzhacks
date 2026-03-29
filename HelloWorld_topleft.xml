@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CommandInformation xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://tempuri.org/CommandInformation.xsd">
+  <Metadata>
+    <SoftwareVersion>25.3.4.0</SoftwareVersion>
+    <LicenseSerial>833503</LicenseSerial>
+    <Calibration>2026-03-17T11:07:19.6722405-04:00</Calibration>
+    <SaveCount>484</SaveCount>
+    <SaveDate>2026-03-29T14:29:18.7972447-04:00</SaveDate>
+  </Metadata>
+  <Command>
+    <Line>1</Line>
+    <Type>StartProgram</Type>
+    <Description>Start of Workflow</Description>
+  </Command>
+  <Command>
+    <Line>2</Line>
+    <Type>StepStart</Type>
+    <Description>Step Start</Description>
+    <Comment>Step 1</Comment>
+    <Step>1</Step>
+  </Command>
+  <Command>
+    <Line>3</Line>
+    <Type>VDFGraphics</Type>
+    <Description>Square Outline.svg</Description>
+    <FileName>Square Outline.svg</FileName>
+    <Canvas>1</Canvas>
+    <X>97</X>
+    <Y>99</Y>
+    <Width>187</Width>
+    <Height>199</Height>
+    <BlinkRate>1000</BlinkRate>
+    <Movements>None</Movements>
+    <FilePath>C:\Program Files\OPS Solutions\Light Guide Systems\VDFGraphics\Shapes\Square Outline.svg</FilePath>
+  </Command>
+  <Command>
+    <Line>4</Line>
+    <Type>Confirmation</Type>
+    <Description>Wait For [Manual Confirmation]</Description>
+    <Variable>Manual Confirmation</Variable>
+    <ConfirmType>Forward</ConfirmType>
+    <StepsToMove>1</StepsToMove>
+  </Command>
+  <Command>
+    <Line>5</Line>
+    <Type>EndProgram</Type>
+    <Description>End of Workflow</Description>
+    <FileName>HelloWorld.xml</FileName>
+    <FilePath>C:\Program Files\OPS Solutions\Light Guide Systems\VDFPrograms\HelloWorld.xml</FilePath>
+  </Command>
+</CommandInformation>
