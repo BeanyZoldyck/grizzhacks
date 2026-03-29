@@ -1,0 +1,96 @@
+{
+  "lesson_name": "ESP32_LED_Lesson",
+  "description": "Simple LED circuit assembly with ESP32-C3",
+  "steps": [
+    {
+      "step": 1,
+      "description": "Place breadboard",
+      "instruction": "Place the breadboard on your workspace",
+      "visuals": [
+        {
+          "type": "Text",
+          "text": "Step 1: Place Breadboard",
+          "x": 500,
+          "y": 100,
+          "width": 400,
+          "height": 50,
+          "font_size": 30
+        },
+        {
+          "type": "Graphics",
+          "filename": "Rectangle.svg",
+          "x": 400,
+          "y": 200,
+          "width": 300,
+          "height": 200,
+          "color": "0,255,0"
+        }
+      ]
+    },
+    {
+      "step": 2,
+      "description": "Place ESP32-C3",
+      "instruction": "Insert ESP32-C3 into breadboard",
+      "visuals": [
+        {
+          "type": "Text",
+          "text": "Step 2: Insert ESP32-C3",
+          "x": 500,
+          "y": 100,
+          "width": 400,
+          "height": 50,
+          "font_size": 30
+        },
+        {
+          "type": "Graphics",
+          "filename": "ChipOutline.svg",
+          "x": 480,
+          "y": 280,
+          "width": 140,
+          "height": 140,
+          "color": "0,255,0"
+        }
+      ]
+    },
+    {
+      "step": 3,
+      "description": "Connect LED",
+      "instruction": "Connect LED anode to GPIO8",
+      "visuals": [
+        {
+          "type": "Text",
+          "text": "Step 3: Connect LED",
+          "x": 500,
+          "y": 100,
+          "width": 400,
+          "height": 50,
+          "font_size": 30
+        },
+        {
+          "type": "Line",
+          "x": 520,
+          "y": 350,
+          "width": 100,
+          "height": 0,
+          "color": "255,255,0"
+        }
+      ]
+    },
+    {
+      "step": 4,
+      "description": "Complete Circuit",
+      "instruction": "Circuit complete! Press Next to test.",
+      "visuals": [
+        {
+          "type": "Text",
+          "text": "Circuit Complete!",
+          "x": 500,
+          "y": 200,
+          "width": 400,
+          "height": 60,
+          "font_size": 40
+        }
+      ]
+    }
+  ]
+}

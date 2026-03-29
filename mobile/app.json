@@ -1,0 +1,33 @@
+{
+  "expo": {
+    "name": "Embettered Voice",
+    "slug": "embettered-voice",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "scheme": "embettered-voice",
+    "userInterfaceStyle": "automatic",
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.embettered.voice",
+      "infoPlist": {
+        "NSMicrophoneUsageDescription": "Record your voice to generate Embettered lessons on your laptop.",
+        "NSAppTransportSecurity": {
+          "NSAllowsLocalNetworking": true
+        }
+      }
+    },
+    "android": {
+      "package": "com.embettered.voice",
+      "permissions": ["android.permission.RECORD_AUDIO"],
+      "usesCleartextTraffic": true
+    },
+    "plugins": [
+      [
+        "expo-av",
+        {
+          "microphonePermission": "Allow Embettered Voice to record audio for lesson prompts."
+        }
+      ]
+    ]
+  }
+}
