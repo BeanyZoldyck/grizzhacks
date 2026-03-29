@@ -25,6 +25,13 @@ import requests
 
 from lightguide_client import LightGuideClient
 
+SCENES_DIR = Path(
+    os.environ.get(
+        "LIGHTGUIDE_SCENES_DIR",
+        r"C:\Program Files\OPS Solutions\Light Guide Systems\VDFPrograms\scenes",
+    )
+)
+
 
 @dataclass
 class SceneSet:
@@ -66,8 +73,7 @@ def _bucket_index(step_time_main: float, cycle_seconds: float, scene_count: int)
 
 
 def _clear_scene_xmls(scenes_dir: Path) -> None:
-    if not scenes_dir.exists():
-        return
+    scenes_dir.mkdir(parents=True, exist_ok=True)
     for path in scenes_dir.glob("*.xml"):
         path.unlink(missing_ok=True)
 
@@ -379,9 +385,8 @@ def _write_scene_bundle(scenes_dir: Path, files: dict[str, str]) -> list[str]:
 
     written: list[str] = []
     for file_name in sorted(files.keys()):
-        if scenes_dir.exists():
-            target = scenes_dir / file_name
-            target.write_text(files[file_name], encoding="utf-8")
+        target = scenes_dir / file_name
+        target.write_text(files[file_name], encoding="utf-8")
         written.append(f"scenes/{file_name}")
     return written
 
@@ -529,11 +534,6 @@ def build_parser() -> argparse.ArgumentParser:
         help="HTTP timeout for backend request",
     )
     parser.add_argument(
-        "--scenes-dir",
-        default="scenes",
-        help="Optional local folder for streamed scene XML files (write/clean skipped if missing)",
-    )
-    parser.add_argument(
         "--default-program",
         action="append",
         dest="default_programs",
@@ -548,7 +548,7 @@ def build_parser() -> argparse.ArgumentParser:
 async def _main_async(args: argparse.Namespace) -> None:
     _load_env()
 
-    scenes_dir = Path(args.scenes_dir)
+    scenes_dir = SCENES_DIR
 
     _clear_scene_xmls(scenes_dir)
 
