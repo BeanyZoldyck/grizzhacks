@@ -1,6 +1,6 @@
-# ESP32-C3 Ping Project
+# Embettered
 
-This repository contains a simple PlatformIO + Arduino project for an ESP32-C3 that connects to Wi‑Fi and periodically POSTs a JSON "hello" message to a configurable HTTP endpoint, plus a FastAPI test server you can run locally to verify the device.
+Embedded lesson generation and ESP32 / FastAPI demo.
 
 Files of interest:
 - `platformio.ini` - PlatformIO project file (environment `esp32-c3`).

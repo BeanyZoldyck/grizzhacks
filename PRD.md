@@ -1,16 +1,18 @@
 # Product Requirements Document (PRD)
 
-## CircuitSight — AR-Guided Embedded Systems Learning Platform
+## Embettered — Embedded systems learning platform
 
 **Version:** 1.0  
 **Date:** March 28, 2026  
 **Project:** GrizzHacks Hackathon Entry  
 
+**Repository note (current codebase):** LightGuide / AR projection and the LightGuidePy SDK are **not** part of this repo. Lessons are generated as JSON (with optional `Text` / `Graphics` / `Line` visuals) and persisted to **MongoDB**; **FastAPI** handles voice/text lesson generation and **ESP32** code handles LAN pings.
+
 ---
 
 ## 1. Overview
 
-CircuitSight is an interactive learning tool for people who want to learn embedded systems. It combines an **Augmented Reality (AR) LightGuide projection system** with a **host computer** to deliver step-by-step, spatially-anchored assembly instructions directly onto a physical workspace. Users place real hardware components (e.g., an ESP32-C3, breadboard, jumper wires, sensors) on a surface while the system projects visual guides — lines, boxes, outlines, and text — showing them exactly where each component goes and how to wire everything together.
+Embettered is an embedded-systems learning flow: AI-generated **lesson steps** (JSON), storage in MongoDB, a **host FastAPI** service for voice and text prompts, and an **ESP32** client for connectivity demos. Downstream consumers read lesson documents from the database (direct PyMongo inserts from the client and FastAPI).
 
 ---
 

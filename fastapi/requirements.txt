@@ -1,2 +1,7 @@
 fastapi
 uvicorn
+python-multipart
+openai
+python-dotenv
+anthropic
+pymongo>=4.6
