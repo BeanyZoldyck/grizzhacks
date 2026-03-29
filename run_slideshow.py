@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 """Slideshow Generator - Run from project root"""
-
+#```(main!) % ssh -D 1080 root@149.28.119.246 -N``` run this too on a separate terminal
 import sys
 import os
 from pathlib import Path
