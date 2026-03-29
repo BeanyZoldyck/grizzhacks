@@ -244,7 +244,7 @@ def build_parser() -> argparse.ArgumentParser:
 async def _main_async(args: argparse.Namespace) -> None:
     _load_env()
 
-    ws_uri = os.environ.get("MONGODB_URI", "").strip()
+    ws_uri = os.environ.get("MONGODB_URI", "ws://141.210.86.11:8765").strip()
     if not ws_uri:
         raise RuntimeError("MONGODB_URI is required and must be a ws:// or wss:// URL")
     if not (ws_uri.startswith("ws://") or ws_uri.startswith("wss://")):
