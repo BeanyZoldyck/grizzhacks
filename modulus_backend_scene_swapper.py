@@ -1,11 +1,10 @@
-"""Hot-swap XML scene programs by polling MongoDB for updates.
+"""Hot-swap XML scene programs by polling an HTTP backend endpoint.
 
 Behavior:
-1. Load environment via dotenv and read MONGODB_URI from os.environ.
-2. Patch sockets for SOCKS5 proxy (PySocks), then initialize pymongo.
+1. Load environment via dotenv.
 3. On startup, clear XML files in scenes/ and play default waiting scenes.
-4. Poll embetter.lesson_plans every 10 seconds for newest document.
-5. If newest document changed, replace scenes/ XML files and display them by
+4. Poll POST /lesson/text/xml every 10 seconds.
+5. If response XML bundle changed, replace scenes/ XML files and display them by
    StepTimeMain modulus buckets.
 """
 
@@ -16,14 +15,13 @@ import asyncio
 from datetime import datetime
 import json
 import os
-import socket
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 import xml.etree.ElementTree as ET
 
-import socks
 from dotenv import load_dotenv
+import requests
 
 from lightguide_client import LightGuideClient
 
@@ -43,16 +41,6 @@ def _load_env() -> None:
     repo_root = _repo_root()
     load_dotenv(override=True)
     load_dotenv(repo_root / "mongo" / ".env", override=True)
-
-
-def _patch_socks_socket() -> None:
-    proxy_host = os.environ.get("SOCKS_PROXY_HOST", "localhost")
-    proxy_port = int(os.environ.get("SOCKS_PROXY_PORT", "1080"))
-
-    socks.set_default_proxy(socks.SOCKS5, proxy_host, proxy_port)
-    socket.SOCK_CLOEXEC = 0
-    socket.socket = socks.socksocket
-    socks.wrapmodule(socket)
 
 
 def _parse_step_time_main(payload: object) -> float:
@@ -90,12 +78,41 @@ def _extract_xml_bundle_from_payload(payload: object) -> dict[str, str]:
 
     files: dict[str, str] = {}
 
+    if isinstance(payload, list):
+        for idx, item in enumerate(payload, start=1):
+            if isinstance(item, str) and item.lstrip().startswith("<"):
+                files[f"Scene{idx}.xml"] = item
+            elif isinstance(item, dict):
+                name = item.get("name") or item.get("filename")
+                content = item.get("content") or item.get("xml")
+                if isinstance(content, str):
+                    if not isinstance(name, str) or not name.strip():
+                        name = f"Scene{idx}.xml"
+                    files[name] = content
+
     if isinstance(payload, dict):
         scenes_map = payload.get("scenes")
         if isinstance(scenes_map, dict):
             for name, content in scenes_map.items():
                 if isinstance(name, str) and isinstance(content, str):
                     files[name] = content
+
+        xml_map = payload.get("xml_files")
+        if isinstance(xml_map, dict):
+            for name, content in xml_map.items():
+                if isinstance(name, str) and isinstance(content, str):
+                    files[name] = content
+
+        xml_scenes = payload.get("xml_scenes")
+        if isinstance(xml_scenes, list):
+            for idx, item in enumerate(xml_scenes, start=1):
+                if isinstance(item, str):
+                    files[f"Scene{idx}.xml"] = item
+                elif isinstance(item, dict):
+                    name = item.get("name") or item.get("filename") or f"Scene{idx}.xml"
+                    content = item.get("content") or item.get("xml")
+                    if isinstance(name, str) and isinstance(content, str):
+                        files[name] = content
 
         file_list = payload.get("files")
         if isinstance(file_list, list):
@@ -109,9 +126,14 @@ def _extract_xml_bundle_from_payload(payload: object) -> dict[str, str]:
 
         if not files:
             name = payload.get("name") or payload.get("filename")
-            content = payload.get("content")
+            content = payload.get("content") or payload.get("xml")
             if isinstance(name, str) and isinstance(content, str):
                 files[name] = content
+
+        if not files:
+            inline_xml = payload.get("xml")
+            if isinstance(inline_xml, str) and inline_xml.lstrip().startswith("<"):
+                files["Scene1.xml"] = inline_xml
 
     if not files:
         raise ValueError("No XML files found in backend payload")
@@ -129,43 +151,18 @@ def _extract_xml_bundle_from_payload(payload: object) -> dict[str, str]:
     return cleaned
 
 
-def _extract_xml_bundle_from_document(document: dict[str, Any]) -> dict[str, str]:
-    metadata = document.get("metadata")
-    if isinstance(metadata, dict):
-        tool_docs = metadata.get("tool_xml_documents")
-        if isinstance(tool_docs, list):
-            files: dict[str, str] = {}
-            for idx, item in enumerate(tool_docs, start=1):
-                if not isinstance(item, dict):
-                    continue
-                xml_text = item.get("xml")
-                if not isinstance(xml_text, str):
-                    continue
-                raw_path = item.get("path")
-                if isinstance(raw_path, str) and raw_path.strip():
-                    file_name = Path(raw_path).name
-                else:
-                    file_name = f"Scene{idx}.xml"
-                if not file_name.lower().endswith(".xml"):
-                    file_name = f"{file_name}.xml"
-                files[file_name] = xml_text
-            if files:
-                return files
-
-    steps = document.get("steps")
-    lesson_name = str(document.get("lesson_name") or "BackendLesson")
-    if isinstance(steps, list) and steps:
-        files = _build_scene_xmls_from_steps(lesson_name, steps)
-        if files:
-            return files
-
-    candidates = [
-        document.get("payload"),
-        document.get("message"),
-        document.get("text"),
-        document.get("json"),
-        document,
-    ]
+def _extract_xml_bundle_from_response(payload: Any) -> dict[str, str]:
+    candidates: list[Any] = []
+    if isinstance(payload, dict):
+        candidates.extend(
+            [
+                payload.get("payload"),
+                payload.get("message"),
+                payload.get("text"),
+                payload.get("json"),
+            ]
+        )
+    candidates.append(payload)
 
     for candidate in candidates:
         if candidate is None:
@@ -175,7 +172,7 @@ def _extract_xml_bundle_from_document(document: dict[str, Any]) -> dict[str, str
         except Exception:
             continue
 
-    raise ValueError("No XML bundle found in MongoDB document")
+    raise ValueError("No XML bundle found in backend response")
 
 
 def _build_scene_xmls_from_steps(lesson_name: str, steps: list[Any]) -> dict[str, str]:
@@ -352,47 +349,42 @@ def _write_scene_bundle(scenes_dir: Path, files: dict[str, str]) -> list[str]:
     return written
 
 
-def _latest_lesson_plan_doc(mongo_uri: str, db_name: str, collection_name: str) -> dict[str, Any] | None:
-    from pymongo import MongoClient
-
-    client = MongoClient(mongo_uri)
-    try:
-        collection = client[db_name][collection_name]
-        return collection.find_one(sort=[("_id", -1)])
-    finally:
-        client.close()
+def _post_lesson_xml(endpoint_url: str, query: str, provider: str, timeout_seconds: float) -> Any:
+    payload = {"query": query, "provider": provider}
+    response = requests.post(endpoint_url, json=payload, timeout=timeout_seconds)
+    response.raise_for_status()
+    return response.json()
 
 
-async def _mongo_poller(
+async def _endpoint_poller(
     *,
-    mongo_uri: str,
-    db_name: str,
-    collection_name: str,
+    endpoint_url: str,
+    query: str,
+    provider: str,
     scenes_dir: Path,
     updates: asyncio.Queue[SceneSet],
+    request_timeout_seconds: float,
     poll_seconds: float,
 ) -> None:
     version = 0
-    last_seen_id: object | None = None
+    last_signature: str | None = None
 
     while True:
         try:
-            doc = await asyncio.to_thread(
-                _latest_lesson_plan_doc,
-                mongo_uri,
-                db_name,
-                collection_name,
+            response_payload = await asyncio.to_thread(
+                _post_lesson_xml,
+                endpoint_url,
+                query,
+                provider,
+                request_timeout_seconds,
             )
-            if doc is None:
-                await asyncio.sleep(poll_seconds)
-                continue
+            files = _extract_xml_bundle_from_response(response_payload)
+            signature = json.dumps(files, sort_keys=True)
 
-            latest_id = doc.get("_id")
-            if latest_id != last_seen_id:
-                files = _extract_xml_bundle_from_document(doc)
+            if signature != last_signature:
                 programs = _write_scene_bundle(scenes_dir, files)
                 version += 1
-                last_seen_id = latest_id
+                last_signature = signature
                 await updates.put(
                     SceneSet(
                         programs=programs,
@@ -453,7 +445,7 @@ async def _player_loop(
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
-        description="Swap XML programs from MongoDB poll using StepTimeMain modulus",
+        description="Swap XML programs from backend endpoint using StepTimeMain modulus",
     )
     parser.add_argument(
         "--base-url",
@@ -473,20 +465,31 @@ def build_parser() -> argparse.ArgumentParser:
         help="Polling interval for StepTimeMain",
     )
     parser.add_argument(
-        "--mongo-poll-seconds",
+        "--backend-poll-seconds",
         type=float,
         default=10.0,
-        help="Polling interval for MongoDB lesson updates",
+        help="Polling interval for /lesson/text/xml updates",
     )
     parser.add_argument(
-        "--mongo-db",
-        default="embetter",
-        help="MongoDB database name",
+        "--endpoint-url",
+        default="https://7a26-141-210-86-11.ngrok-free.app/lesson/text/xml",
+        help="Backend endpoint that returns XML files",
     )
     parser.add_argument(
-        "--mongo-collection",
-        default="lesson_plans",
-        help="MongoDB collection name",
+        "--lesson-query",
+        default="Create a 3-step lesson for wiring an LED with ESP32",
+        help="Query sent in POST body to backend",
+    )
+    parser.add_argument(
+        "--provider",
+        default="openai",
+        help="Provider sent in POST body to backend",
+    )
+    parser.add_argument(
+        "--request-timeout-seconds",
+        type=float,
+        default=30.0,
+        help="HTTP timeout for backend request",
     )
     parser.add_argument(
         "--scenes-dir",
@@ -507,11 +510,6 @@ def build_parser() -> argparse.ArgumentParser:
 
 async def _main_async(args: argparse.Namespace) -> None:
     _load_env()
-    _patch_socks_socket()
-
-    mongo_uri = os.environ.get("MONGODB_URI", "").strip()
-    if not mongo_uri:
-        raise RuntimeError("MONGODB_URI is required")
 
     scenes_dir = Path(args.scenes_dir)
 
@@ -522,13 +520,14 @@ async def _main_async(args: argparse.Namespace) -> None:
     updates: asyncio.Queue[SceneSet] = asyncio.Queue()
 
     poller_task = asyncio.create_task(
-        _mongo_poller(
-            mongo_uri=mongo_uri,
-            db_name=args.mongo_db,
-            collection_name=args.mongo_collection,
+        _endpoint_poller(
+            endpoint_url=args.endpoint_url,
+            query=args.lesson_query,
+            provider=args.provider,
             scenes_dir=scenes_dir,
             updates=updates,
-            poll_seconds=args.mongo_poll_seconds,
+            request_timeout_seconds=args.request_timeout_seconds,
+            poll_seconds=args.backend_poll_seconds,
         )
     )
 
