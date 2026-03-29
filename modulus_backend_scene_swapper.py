@@ -13,12 +13,14 @@ from __future__ import annotations
 
 import argparse
 import asyncio
+from datetime import datetime
 import json
 import os
 import socket
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
+import xml.etree.ElementTree as ET
 
 import socks
 from dotenv import load_dotenv
@@ -128,6 +130,35 @@ def _extract_xml_bundle_from_payload(payload: object) -> dict[str, str]:
 
 
 def _extract_xml_bundle_from_document(document: dict[str, Any]) -> dict[str, str]:
+    metadata = document.get("metadata")
+    if isinstance(metadata, dict):
+        tool_docs = metadata.get("tool_xml_documents")
+        if isinstance(tool_docs, list):
+            files: dict[str, str] = {}
+            for idx, item in enumerate(tool_docs, start=1):
+                if not isinstance(item, dict):
+                    continue
+                xml_text = item.get("xml")
+                if not isinstance(xml_text, str):
+                    continue
+                raw_path = item.get("path")
+                if isinstance(raw_path, str) and raw_path.strip():
+                    file_name = Path(raw_path).name
+                else:
+                    file_name = f"Scene{idx}.xml"
+                if not file_name.lower().endswith(".xml"):
+                    file_name = f"{file_name}.xml"
+                files[file_name] = xml_text
+            if files:
+                return files
+
+    steps = document.get("steps")
+    lesson_name = str(document.get("lesson_name") or "BackendLesson")
+    if isinstance(steps, list) and steps:
+        files = _build_scene_xmls_from_steps(lesson_name, steps)
+        if files:
+            return files
+
     candidates = [
         document.get("payload"),
         document.get("message"),
@@ -145,6 +176,168 @@ def _extract_xml_bundle_from_document(document: dict[str, Any]) -> dict[str, str
             continue
 
     raise ValueError("No XML bundle found in MongoDB document")
+
+
+def _build_scene_xmls_from_steps(lesson_name: str, steps: list[Any]) -> dict[str, str]:
+    scene_docs: dict[str, str] = {}
+    valid_steps = [step for step in steps if isinstance(step, dict)]
+    for idx, step in enumerate(valid_steps, start=1):
+        file_name = f"Scene{idx}.xml"
+        scene_docs[file_name] = _build_scene_xml(lesson_name=lesson_name, step=step, scene_idx=idx)
+    return scene_docs
+
+
+def _to_int(value: Any, default: int) -> int:
+    try:
+        return int(float(value))
+    except (TypeError, ValueError):
+        return default
+
+
+def _rtf_text(text: str, font_size: int) -> str:
+    clean = text.replace("\\", "\\\\").replace("{", "\\{").replace("}", "\\}")
+    return (
+        r"{\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang1033{\fonttbl{\f0\fnil Microsoft Sans Serif;}}"
+        + "\n"
+        + r"{\colortbl ;\red255\green255\blue255;}"
+        + "\n"
+        + r"{\*\generator Riched20 10.0.19041}\viewkind4\uc1 "
+        + "\n"
+        + rf"\pard\cf1\f0\fs{max(font_size * 2, 2)} {clean}\par"
+        + "\n}"
+    )
+
+
+def _build_scene_xml(*, lesson_name: str, step: dict[str, Any], scene_idx: int) -> str:
+    root = ET.Element(
+        "CommandInformation",
+        {
+            "xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+            "xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+            "xmlns": "http://tempuri.org/CommandInformation.xsd",
+        },
+    )
+
+    metadata = ET.SubElement(root, "Metadata")
+    ET.SubElement(metadata, "SoftwareVersion").text = "25.3.4.0"
+    ET.SubElement(metadata, "LicenseSerial").text = "833503"
+    ET.SubElement(metadata, "Calibration").text = datetime.now().isoformat()
+    ET.SubElement(metadata, "SaveCount").text = "1"
+    ET.SubElement(metadata, "SaveDate").text = datetime.now().isoformat()
+
+    line = 1
+
+    def add_command(cmd_type: str, description: str, fields: dict[str, Any] | None = None) -> None:
+        nonlocal line
+        cmd = ET.SubElement(root, "Command")
+        ET.SubElement(cmd, "Line").text = str(line)
+        ET.SubElement(cmd, "Type").text = cmd_type
+        ET.SubElement(cmd, "Description").text = description
+        if fields:
+            for key, value in fields.items():
+                ET.SubElement(cmd, key).text = str(value)
+        line += 1
+
+    add_command("StartProgram", f"{lesson_name} scene {scene_idx}")
+    add_command("StepStart", "Step Start", {"Comment": f"Scene {scene_idx}", "Step": 1})
+    add_command("ClearCanvas", "Clear Canvas [All]", {"Canvas": 1024})
+
+    visuals = step.get("visuals") if isinstance(step.get("visuals"), list) else []
+    if visuals:
+        for visual in visuals:
+            if not isinstance(visual, dict):
+                continue
+            visual_type = str(visual.get("type") or "").strip().lower()
+            if visual_type == "text":
+                text = str(visual.get("text") or step.get("instruction") or f"Scene {scene_idx}")
+                x = _to_int(visual.get("x"), 780)
+                y = _to_int(visual.get("y"), 280)
+                width = _to_int(visual.get("width"), 400)
+                height = _to_int(visual.get("height"), 70)
+                font_size = _to_int(visual.get("font_size"), 36)
+                add_command(
+                    "VDFText",
+                    f'"{text}"',
+                    {
+                        "Text": text,
+                        "Canvas": 1,
+                        "X": x,
+                        "Y": y,
+                        "Width": width,
+                        "Height": height,
+                        "BlinkType": "None",
+                        "BlinkRate": 1000,
+                        "Movements": "None",
+                        "FontName": "Microsoft Sans Serif",
+                        "TextColor": "255,255,255,255",
+                        "FontSize": font_size,
+                        "Justify": 0,
+                        "Rtf": _rtf_text(text, font_size),
+                    },
+                )
+            elif visual_type in {"graphics", "vdfgraphics"}:
+                filename = str(visual.get("filename") or "Square Outline.svg")
+                x = _to_int(visual.get("x"), 840)
+                y = _to_int(visual.get("y"), 380)
+                width = _to_int(visual.get("width"), 120)
+                height = _to_int(visual.get("height"), 220)
+                color = str(visual.get("color") or "0,255,0")
+                add_command(
+                    "VDFGraphics",
+                    f"{filename}; Color: '{color}'",
+                    {
+                        "FileName": filename,
+                        "Canvas": 1,
+                        "X": x,
+                        "Y": y,
+                        "Width": width,
+                        "Height": height,
+                        "BlinkRate": 1000,
+                        "Movements": "None",
+                        "FilePath": (
+                            "C:\\Program Files\\OPS Solutions\\Light Guide Systems\\"
+                            f"VDFGraphics\\Shapes\\{filename}"
+                        ),
+                        "FilterColor": color,
+                    },
+                )
+
+    if line == 4:
+        fallback = str(step.get("instruction") or step.get("description") or f"Scene {scene_idx}")
+        add_command(
+            "VDFText",
+            f'"{fallback}"',
+            {
+                "Text": fallback,
+                "Canvas": 1,
+                "X": 780,
+                "Y": 300,
+                "Width": 600,
+                "Height": 70,
+                "BlinkType": "None",
+                "BlinkRate": 1000,
+                "Movements": "None",
+                "FontName": "Microsoft Sans Serif",
+                "TextColor": "255,255,255,255",
+                "FontSize": 36,
+                "Justify": 0,
+                "Rtf": _rtf_text(fallback, 36),
+            },
+        )
+
+    add_command(
+        "EndProgram",
+        f"End Scene {scene_idx}",
+        {
+            "FileName": f"Scene{scene_idx}.xml",
+            "FilePath": (
+                "C:\\Program Files\\OPS Solutions\\Light Guide Systems\\"
+                f"VDFPrograms\\scenes\\Scene{scene_idx}.xml"
+            ),
+        },
+    )
+
+    return ET.tostring(root, encoding="utf-8", xml_declaration=True).decode("utf-8")
 
 
 def _write_scene_bundle(scenes_dir: Path, files: dict[str, str]) -> list[str]:
