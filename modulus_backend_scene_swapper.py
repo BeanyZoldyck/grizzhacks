@@ -76,7 +76,8 @@ def _bucket_index(step_time_main: float, cycle_seconds: float, scene_count: int)
 
 
 def _clear_scene_xmls(scenes_dir: Path) -> None:
-    scenes_dir.mkdir(parents=True, exist_ok=True)
+    if not scenes_dir.exists():
+        return
     for path in scenes_dir.glob("*.xml"):
         path.unlink(missing_ok=True)
 
@@ -151,8 +152,9 @@ def _write_scene_bundle(scenes_dir: Path, files: dict[str, str]) -> list[str]:
 
     written: list[str] = []
     for file_name in sorted(files.keys()):
-        target = scenes_dir / file_name
-        target.write_text(files[file_name], encoding="utf-8")
+        if scenes_dir.exists():
+            target = scenes_dir / file_name
+            target.write_text(files[file_name], encoding="utf-8")
         written.append(f"scenes/{file_name}")
     return written
 
@@ -295,13 +297,17 @@ def build_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument(
         "--scenes-dir",
-        default=str(_repo_root() / "scenes"),
-        help="Folder where streamed scene XML files are written",
+        default="scenes",
+        help="Optional local folder for streamed scene XML files (write/clean skipped if missing)",
     )
     parser.add_argument(
-        "--default-dir",
-        default=str(_repo_root() / "default"),
-        help="Folder containing waiting scene XML files",
+        "--default-program",
+        action="append",
+        dest="default_programs",
+        help=(
+            "Program path for waiting animation. Repeat for multiple files. "
+            "Defaults to default/Waiting1.xml and default/Waiting2.xml"
+        ),
     )
     return parser
 
@@ -310,18 +316,15 @@ async def _main_async(args: argparse.Namespace) -> None:
     _load_env()
     _patch_socks_socket()
 
-    mongo_uri = os.environ.get("MONGODB_URI", "mongodb://nitinshankarmadhu_db_user:7oDMNkPOgKwW48Os@ac-8tta532-shard-00-00.5mp073e.mongodb.net:27017,ac-8tta532-shard-00-01.5mp073e.mongodb.net:27017,ac-8tta532-shard-00-02.5mp073e.mongodb.net:27017/?ssl=true&replicaSet=atlas-m7n2df-shard-0&authSource=admin&appName=Cluster0").strip()
+    mongo_uri = os.environ.get("MONGODB_URI", "").strip()
     if not mongo_uri:
         raise RuntimeError("MONGODB_URI is required")
 
-    scenes_dir = Path(args.scenes_dir).resolve()
-    default_dir = Path(args.default_dir).resolve()
+    scenes_dir = Path(args.scenes_dir)
 
     _clear_scene_xmls(scenes_dir)
 
-    default_programs = sorted([f"default/{p.name}" for p in default_dir.glob("*.xml")])
-    if not default_programs:
-        raise RuntimeError(f"No default XML files found in {default_dir}")
+    default_programs = args.default_programs or ["default/Waiting1.xml", "default/Waiting2.xml"]
 
     updates: asyncio.Queue[SceneSet] = asyncio.Queue()
 
