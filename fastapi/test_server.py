@@ -729,6 +729,50 @@ def _transcribe_whisper(data: bytes, filename: str | None) -> str:
     return transcription.text.strip()
 
 
+def _speak_query_with_elevenlabs(query: str) -> bytes:
+    """Convert input query text to spoken audio with ElevenLabs."""
+    text = query.strip()
+    if not text:
+        raise HTTPException(status_code=400, detail="Empty query")
+
+    try:
+        from elevenlabs.client import ElevenLabs
+    except ImportError as e:
+        raise HTTPException(
+            status_code=500,
+            detail="elevenlabs package not installed on server",
+        ) from e
+
+    api_key = os.environ.get("ELEVENLABS_API_KEY")
+    if not api_key:
+        raise HTTPException(
+            status_code=503,
+            detail="ELEVENLABS_API_KEY is not set",
+        )
+
+    voice_id = os.environ.get("ELEVENLABS_VOICE_ID", "JBFqnCBsd6RMkjVDRZzb")
+    model_id = os.environ.get("ELEVENLABS_MODEL_ID", "eleven_multilingual_v2")
+    client = ElevenLabs(api_key=api_key)
+
+    try:
+        audio_stream = client.text_to_speech.convert(
+            voice_id=voice_id,
+            model_id=model_id,
+            text=text,
+            output_format="mp3_44100_128",
+        )
+        audio = b"".join(audio_stream)
+    except Exception as e:
+        raise HTTPException(
+            status_code=502,
+            detail=f"ElevenLabs TTS failed: {e!s}",
+        ) from e
+
+    if not audio:
+        raise HTTPException(status_code=502, detail="ElevenLabs returned empty audio")
+    return audio
+
+
 async def _run_lesson_from_query(
     query: str,
     *,
@@ -831,7 +875,7 @@ async def _run_lesson_from_query(
     }
 
 
-@app.post("/ping")
+@app.post("/update")
 async def receive_ping(p: Ping):
     print(f"Received ping from {p.device} id={p.id} msg={p.msg}")
     return {"status": "ok", "received": p.model_dump()}
@@ -850,7 +894,9 @@ async def voice_lesson(
 ):
     """Upload audio; transcribe with Whisper; generate lesson and persist to MongoDB."""
     if provider not in ("openai", "anthropic"):
-        raise HTTPException(status_code=400, detail="provider must be openai or anthropic")
+        raise HTTPException(
+            status_code=400, detail="provider must be openai or anthropic"
+        )
 
     raw = await file.read()
     if not raw:
@@ -882,9 +928,17 @@ async def lesson_from_text(body: LessonTextBody):
 
 
 @app.post("/lesson/text/xml")
-async def lesson_from_text_with_xml():
-    """Temporary stub: return a fixed JSON payload without running workflow."""
-    return _HARDCODED_LESSON_XML_RESPONSE
+async def lesson_from_text_with_xml(body: LessonTextBody):
+    """Generate lesson from text with full XML output (tool_xml + visualization_xml)."""
+    result = await _run_lesson_from_query(
+        body.query.strip(),
+        provider=body.provider,
+        persist_mongo=True,
+        include_tool_xml=True,
+        include_visualization_xml=True,
+    )
+    result["transcript"] = body.query.strip()
+    return result
 
 
 if __name__ == "__main__":
