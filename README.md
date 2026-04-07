@@ -1,4 +1,4 @@
-# Embettered
+# Pinpoint
 
 Embedded lesson generation and ESP32 / FastAPI demo.
 
